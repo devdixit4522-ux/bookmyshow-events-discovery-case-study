@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BookMyShow — Funnel 2 (category homes)</title>
+  <script>
+    (function () {
+      var shot = new URLSearchParams(location.search).get("figma")
+        || new URLSearchParams(String(location.hash || "").replace(/^#/, "")).get("figma");
+      if (shot) document.documentElement.setAttribute("data-figma", shot);
+    })();
+  </script>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    :root {
+      --surface: #FFFFFF;
+      --surface-raised: #F5F5F5;
+      --ink: #333333;
+      --ink-muted: #666666;
+      --accent: #EB0028;
+      --border: #757575;
+      --border-soft: #BDBDBD;
+      --blue: #1E88E5;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --display: 700 20px/1.25 var(--font);
+      --hero: 700 22px/1.18 var(--font);
+      --heading: 600 16px/1.2 var(--font);
+      --body: 400 14px/1.4 var(--font);
+      --title: 500 13px/1.25 var(--font);
+      --caption: 400 12px/1.35 var(--font);
+      --caption-strong: 600 12px/1.35 var(--font);
+      --meta: 400 11px/1.25 var(--font);
+      --label: 500 10px/1.2 var(--font);
+      --s1: 2px;
+      --s2: 4px;
+      --s3: 8px;
+      --s4: 12px;
+      --s5: 16px;
+      --s6: 24px;
+      --s7: 32px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #f0f0f2; }
+    body {
+      font: var(--body); color: var(--ink);
+      margin: 0; min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px 16px 40px; gap: 12px;
+      background: #f0f0f2;
+    }
+    @media (max-height: 920px) {
+      body { justify-content: flex-start; }
+    }
+    .phone {
+      width: 390px; height: 844px;
+      background: var(--surface);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      position: relative;
+      flex-shrink: 0;
+      border: 1px solid #f0f0f2;
+      box-shadow: 0 18px 48px rgba(6, 8, 9, 0.10);
+    }
+    .phone-scroll {
+      flex: 1; min-height: 0;
+      overflow-y: auto; overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      display: flex; flex-direction: column;
+    }
+    .phone-scroll::-webkit-scrollbar { display: none; }
+    .status {
+      height: 44px; flex-shrink: 0;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      padding: 0 16px 8px;
+      font: 600 12px/1 var(--font); color: var(--ink);
+    }
+    .status-end { display: flex; align-items: center; gap: 8px; }
+    .status-end svg { width: 14px; height: 14px; }
+    svg.lucide {
+      display: inline-block;
+      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      stroke-width: 1.8;
+    }
+    .stage {
+      flex: 1 0 auto;
+      position: relative;
+    }
+
+    .proto {
+      width: 390px; flex-shrink: 0;
+      background: #1a1a1a; color: #ccc;
+      padding: var(--s3) var(--s4); font: 600 12px/1.35 var(--font);
+      border-radius: 8px;
+    }
+    html[data-figma] .proto { display: none !important; }
+    html[data-figma],
+    html[data-figma] body {
+      background: #fff !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      min-height: 844px;
+      gap: 0 !important;
+      justify-content: flex-start !important;
+      align-items: flex-start !important;
+    }
+    html[data-figma] .phone {
+      border-radius: 0;
+      box-shadow: none;
+      border: none;
+      width: 390px;
+      height: 844px;
+    }
+    .proto strong { color: #fff; }
+    .proto-row { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: 6px; align-items: center; }
+    .proto-label {
+      flex: 0 0 100%; margin: var(--s2) 0 0; font: 600 10px/1.2 var(--font);
+      color: #888; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .proto-label:first-child { margin-top: 0; }
+    .proto-btn {
+      border: 1px solid #555; background: #2a2a2a; color: #eee;
+      border-radius: 8px; padding: var(--s3) var(--s4); font: 600 12px/1 var(--font); cursor: pointer;
+    }
+    .proto-btn.active { background: var(--accent); border-color: var(--accent); }
+
+    /* —— Global chrome (every page) —— */
+    .chrome {
+      flex-shrink: 0;
+      background: var(--surface);
+      padding-bottom: var(--s3);
+    }
+    .header {
+      display: flex; align-items: flex-start; gap: var(--s1);
+      padding: var(--s3) var(--s5) var(--s3);
+    }
+    .header-text { min-width: 0; }
+    .header h1 { font: var(--hero); }
+    .header .location {
+      display: inline-flex; align-items: center; gap: var(--s2);
+      margin-top: var(--s3); padding: 0; border: none; background: none;
+      font: 500 14px/1.2 var(--font); color: var(--accent);
+      cursor: pointer;
+    }
+    .header .location .loc-name {
+      display: block; line-height: 1.2;
+    }
+    .header .location svg { width: 14px; height: 14px; }
+    .search-block { padding: 0 var(--s5); width: 100%; }
+    .search-bar {
+      display: flex; align-items: center; gap: var(--s4);
+      width: 100%; height: 44px; padding: 0 var(--s4);
+      background: var(--surface-raised);
+      border: 1px solid var(--border); border-radius: 8px;
+    }
+    .search-bar svg { width: 18px; height: 18px; color: var(--ink-muted); flex-shrink: 0; }
+    .search-bar input {
+      flex: 1; border: none; background: transparent; outline: none;
+      font: var(--body); color: var(--ink); min-width: 0;
+    }
+    .search-bar input::placeholder { color: var(--ink-muted); }
+
+    .view {
+      display: none; padding-top: 0;
+    }
+    .view.is-active { display: block; }
+
+    /* Compact intent doors */
+    .doors {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4);
+      padding: var(--s3) var(--s5) var(--s5);
+    }
+    .door {
+      border: 1px solid var(--border-soft); border-radius: 8px;
+      background: var(--surface);
+      padding: var(--s3); min-height: 56px;
+      display: flex; flex-direction: row; align-items: center; gap: var(--s3);
+      text-align: left; cursor: pointer; font: inherit; color: inherit;
+    }
+    .door:active, .door:focus-visible { border-color: var(--accent); outline: none; }
+    .door.door-movies {
+      background: radial-gradient(circle at 15% 20%, rgba(235,0,40,0.22), rgba(235,0,40,0.02) 75%), var(--surface);
+    }
+    .door.door-events {
+      background: radial-gradient(circle at 15% 20%, rgba(30,136,229,0.22), rgba(30,136,229,0.02) 75%), var(--surface);
+    }
+    .door-icon {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.75);
+    }
+    .door-icon svg { width: 22px; height: 22px; display: block; }
+    .door-icon.icon-movies svg { color: var(--accent); }
+    .door-icon.icon-events svg { color: var(--blue); }
+    .door-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .door-title { font: 600 14px/1.2 var(--font); }
+    .door-sub { font: var(--caption); color: var(--ink-muted); }
+
+    .section { padding: 0 var(--s5); margin-bottom: var(--s5); }
+    .section-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: var(--s3); gap: var(--s4);
+    }
+    .section-head.col { flex-direction: column; align-items: flex-start; gap: var(--s3); }
+    .section-head h2 { font: var(--heading); }
+    .section-head .sub { font: var(--meta); color: var(--ink-muted); }
+    .section-head .link {
+      min-height: 0; padding: 0;
+      font: 500 14px/1.2 var(--font);
+    }
+    .link {
+      font: 500 14px/1.2 var(--font); color: var(--accent);
+      background: none; border: none; cursor: pointer;
+      min-height: 32px; padding: 0 var(--s3);
+      display: inline-flex; align-items: center; gap: var(--s2);
+    }
+    .link svg { width: 16px; height: 16px; }
+
+    .scroll-row {
+      display: flex; gap: var(--s4); overflow-x: auto; scrollbar-width: none;
+      align-items: flex-start;
+    }
+    .scroll-row::-webkit-scrollbar { display: none; }
+    .clamp-2 {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ad-stack { padding: 0 var(--s5) var(--s4); display: flex; flex-direction: column; gap: var(--s4); }
+    .ad {
+      border-radius: 8px; overflow: hidden; position: relative;
+      padding: var(--s5); color: #fff;
+    }
+    .ad-stream {
+      background: linear-gradient(145deg, #0b1b4a 0%, #1a3a7a 55%, #0d9488 140%);
+      min-height: 132px;
+    }
+    .ad-stream .eyebrow { font: var(--caption-strong); }
+    .ad-stream h3 { font: var(--display); margin: var(--s3) 0; max-width: 60%; }
+    .ad-stream .meta { font: var(--caption); opacity: 0.9; max-width: 60%; }
+    .ad-play {
+      background: linear-gradient(90deg, #1a1a1a, #6b2030);
+      min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    }
+    .ad-play .copy { font: 600 14px/1.3 var(--font); max-width: 55%; }
+    .ad-play .cta {
+      background: var(--accent); color: #fff; border: none; border-radius: 8px;
+      min-height: 44px; padding: 0 var(--s5); font: 600 14px/1 var(--font);
+    }
+    .ad-slim {
+      background: var(--surface-raised); color: var(--ink);
+      min-height: 64px; border: 1px solid var(--border-soft);
+      display: flex; align-items: center; gap: var(--s4);
+    }
+    .ad-slim .blob { width: 44px; height: 44px; border-radius: 8px; background: #ddd; }
+    .ad-slim strong { font: var(--caption-strong); display: block; }
+    .ad-slim span { font: var(--caption); color: var(--ink-muted); }
+    .ad-label {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(0,0,0,0.45); color: #fff;
+      font: var(--caption-strong); padding: var(--s2) var(--s3); border-radius: 4px;
+    }
+
+    .movie-card, .happen-card, .event-card {
+      flex: 0 0 calc((76% - var(--s4)) / 2);
+      width: calc((76% - var(--s4)) / 2);
+      background: none; border: none;
+      text-align: left; color: inherit; padding: 0; cursor: pointer;
+      display: flex; flex-direction: column; align-items: stretch;
+      align-self: flex-start; min-width: 0; overflow: hidden;
+    }
+    .movie-card .poster, .happen-card .poster, .event-card .poster {
+      width: 100%; height: auto; aspect-ratio: 2 / 3;
+      border-radius: 8px; background: var(--surface-raised); position: relative;
+      flex-shrink: 0;
+    }
+    .event-card .poster { aspect-ratio: 3 / 4; }
+    .rating-row { display: flex; align-items: center; gap: var(--s1); margin-top: var(--s3); min-width: 0; }
+    .star-icon, .rating-row svg { width: 14px; height: 14px; color: var(--accent); fill: var(--accent); }
+    .rating-num { font: var(--meta); font-weight: 500; flex-shrink: 0; }
+    .meta { font: var(--caption); color: var(--ink-muted); margin-top: var(--s1); }
+    .votes, .facts,
+    .movie-card .meta, .happen-card .meta, .event-card .meta {
+      font: var(--meta); color: var(--ink-muted); margin-top: var(--s2);
+    }
+    .rating-row .votes {
+      font: var(--meta); margin-top: 0;
+      min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .happen-card .meta { display: flex; align-items: center; gap: var(--s2); margin-top: var(--s2); }
+    .happen-card .meta svg { width: 12px; height: 12px; color: var(--accent); fill: var(--accent); }
+    .movie-title, .happen-card .title, .event-card .title, .grid-card .title, .list-card h3, .spotlight h3 {
+      font: var(--title); margin-top: var(--s3);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      min-width: 0; max-width: 100%;
+    }
+    .rating-row + .movie-title { margin-top: var(--s2); }
+    .spotlight h3 { font: var(--heading); margin-top: 0; margin-bottom: var(--s3); }
+    .list-card h3 { font: var(--title); margin-top: 0; }
+    .happen-tag, .date-pill {
+      position: absolute; top: 8px; left: 8px;
+      background: rgba(255,255,255,0.94); color: var(--ink);
+      font: var(--label); padding: var(--s2) var(--s3); border-radius: 20px;
+    }
+    .happen-tag.push { background: var(--accent); color: #fff; }
+    .status-fast { font: var(--meta); font-weight: 500; color: var(--accent); margin-top: var(--s2); }
+    .status-int { font: var(--meta); font-weight: 500; color: var(--blue); margin-top: var(--s2); }
+
+    .utility {
+      margin: 0 var(--s5) var(--s5); padding: var(--s4) var(--s5); background: var(--surface-raised);
+      border-radius: 8px; display: flex; align-items: center; gap: var(--s4);
+      cursor: pointer; border: 1px solid var(--border-soft); width: calc(100% - 32px);
+      text-align: left; font: inherit; color: inherit; min-height: 44px;
+    }
+    .utility-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink);
+    }
+    .utility-icon svg { width: 18px; height: 18px; }
+    .utility-copy { min-width: 0; flex: 1; }
+    .utility svg.link-arrow { width: 16px; height: 16px; color: var(--ink-muted); margin-left: auto; }
+    .utility strong { font: 500 14px/1.25 var(--font); display: block; }
+    .utility span { font: var(--caption); color: var(--ink-muted); }
+
+    .categories {
+      display: flex; gap: var(--s3); padding: var(--s3) var(--s5) var(--s5);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .categories::-webkit-scrollbar { display: none; }
+    .cat {
+      flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;
+      gap: var(--s3); width: 64px; background: none; border: none; cursor: pointer;
+      color: var(--ink); font: inherit;
+    }
+    .cat-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--surface-raised); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--ink);
+    }
+    .cat-icon svg { width: 22px; height: 22px; }
+    .cat span { font: var(--meta); font-weight: 500; text-align: center; }
+
+    .pill-row {
+      display: flex; align-items: center; gap: var(--s3);
+      padding: var(--s3) var(--s5) var(--s5); overflow-x: auto;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .pill-row::-webkit-scrollbar { display: none; }
+    .pill {
+      flex: 0 0 auto;
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 32px; min-height: 32px; padding: 0 14px;
+      border-radius: 16px; border: 1px solid var(--border-soft);
+      background: var(--surface);
+      font: var(--caption); color: var(--ink-muted);
+      line-height: 1; white-space: nowrap; box-sizing: border-box;
+      cursor: pointer;
+    }
+    .pill.active {
+      border-color: var(--accent); color: var(--accent); font-weight: 600;
+    }
+
+    .plan-row { display: flex; gap: var(--s4); overflow-x: auto; scrollbar-width: none; }
+    .plan-card {
+      flex: 0 0 140px; height: 88px; border-radius: 8px; padding: var(--s4);
+      display: flex; flex-direction: column; justify-content: flex-end; color: #fff;
+    }
+    .plan-card .label { font: var(--title); }
+    .plan-card .count { font: var(--meta); opacity: 0.9; margin-top: var(--s2); }
+    .plan-a { background: linear-gradient(135deg, #7B5EA7, #9B7EC8); }
+    .plan-b { background: linear-gradient(135deg, #3D8B5E, #5CB87A); }
+    .plan-c { background: linear-gradient(135deg, #2E6DB4, #4A90D9); }
+
+    .spotlight {
+      margin: 0 var(--s5) var(--s5); border-radius: 12px; overflow: hidden;
+      background: #1a1a1a; color: #fff; position: relative; min-height: 220px;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: var(--s5);
+    }
+    .spotlight .badge {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,0.2); font: var(--label);
+      padding: var(--s2) var(--s3); border-radius: 20px;
+    }
+    .spotlight .tags { display: flex; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s4); }
+    .spotlight .tag {
+      background: rgba(255,255,255,0.15); font: var(--caption); padding: var(--s2) var(--s3); border-radius: 20px;
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .spotlight .tag svg { width: 12px; height: 12px; }
+    .spotlight .book {
+      align-self: flex-start; min-height: 44px; padding: 0 20px;
+      border: none; border-radius: 24px; background: #fff; color: var(--ink);
+      font: 600 14px/1 var(--font); cursor: pointer;
+    }
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--s3);
+    }
+    .grid-card {
+      background: none; border: none; text-align: left; color: inherit;
+      padding: 0; cursor: pointer; min-width: 0; width: 100%;
+    }
+    .grid-card .poster {
+      width: 100%; aspect-ratio: 3 / 4; border-radius: 8px;
+      background: var(--surface-raised); position: relative;
+    }
+    .grid-card .facts { font: var(--meta); color: var(--ink-muted); margin-top: var(--s2); }
+
+    .skel {
+      flex: 0 0 calc((76% - var(--s4)) / 2);
+      width: calc((76% - var(--s4)) / 2);
+      height: auto; aspect-ratio: 2 / 3; border-radius: 8px;
+      background: linear-gradient(90deg, #eee, #f5f5f5, #eee);
+      background-size: 200% 100%; animation: shimmer 1.2s infinite;
+    }
+    .skel.ad-tall { flex: none; width: 100%; height: 132px; }
+    .skel.ad-short { flex: none; width: 100%; height: 72px; }
+    .skel.spot { flex: none; width: calc(100% - 32px); height: 220px; margin: 0 var(--s5) var(--s5); }
+    .skel.util { flex: none; width: calc(100% - 32px); height: 56px; margin: 0 var(--s5) var(--s5); }
+    .skel.pill { flex: 0 0 64px; width: 64px; height: 32px; border-radius: 16px; }
+    .skel.cat { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 50%; }
+    .skel.wide {
+      flex: 0 0 calc((76% - var(--s4)) / 2);
+      width: calc((76% - var(--s4)) / 2);
+      height: auto; aspect-ratio: 3 / 4;
+    }
+    .skel.plan { flex: 0 0 140px; width: 140px; height: 88px; }
+    .skel.grid { flex: none; width: 100%; aspect-ratio: 3/4; height: auto; }
+    @keyframes shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+    .feed-skel { display: none !important; }
+    body[data-proto="loading"] .feed-live { display: none !important; }
+    body[data-proto="loading"] .feed-skel { display: flex !important; }
+    body[data-proto="loading"] .feed-skel.stack { flex-direction: column; }
+    body[data-proto="loading"] .event-grid.feed-skel { display: grid !important; }
+    body[data-proto="loading"] .skel.spot,
+    body[data-proto="loading"] .skel.util { display: block !important; }
+    .empty-inline {
+      font: var(--caption); color: var(--ink-muted);
+      padding: var(--s5); background: var(--surface-raised); border-radius: 8px;
+    }
+    .state-msg {
+      margin: 0 var(--s5) var(--s5); padding: var(--s5); background: var(--surface-raised);
+      border-radius: 8px; font: var(--body); color: var(--ink-muted);
+    }
+    .primary-btn, .secondary-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: calc(100% - 32px); margin: var(--s4) var(--s5) 0; min-height: 48px;
+      border-radius: 8px; font: 600 14px/1 var(--font); cursor: pointer;
+    }
+    .primary-btn { border: none; background: var(--accent); color: #fff; }
+    .secondary-btn {
+      border: 1px solid var(--border); background: var(--surface); color: var(--ink);
+    }
+
+    .bottom-nav-wrap {
+      flex-shrink: 0; z-index: 50;
+      background: var(--surface);
+      border-top: 1px solid #E0E0E0;
+    }
+    .bottom-nav {
+      display: flex; justify-content: space-around; align-items: stretch;
+      background: var(--surface);
+      padding: 6px 0;
+    }
+    .nav-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: var(--s2);
+      font: 500 11px/1.2 var(--font); color: #666666;
+      min-height: 52px; background: none; border: none; cursor: pointer;
+      padding: var(--s2) var(--s1) var(--s1);
+      text-align: center;
+    }
+    .nav-item.active { color: var(--accent); font-weight: 600; }
+    .nav-icon {
+      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+      color: inherit;
+    }
+    .nav-icon svg { width: 22px; height: 22px; display: block; }
+
+    .page-back {
+      display: none; align-items: center; justify-content: center;
+      margin: calc(-1 * var(--s2)) 0 0 calc(-1 * var(--s3)); padding: var(--s3);
+      width: 36px; height: 36px; border: none; background: none;
+      color: var(--ink); cursor: pointer; flex-shrink: 0;
+    }
+    body[data-view="movies"] .page-back,
+    body[data-view="events"] .page-back { display: inline-flex; }
+    .page-back svg { width: 18px; height: 18px; flex-shrink: 0; display: block; }
+
+    body.booking-mode .chrome,
+    body.booking-mode .page-back,
+    body.booking-mode .bottom-nav-wrap { display: none !important; }
+
+    .screen {
+      display: none;
+      background: var(--surface);
+    }
+    .screen.is-open { display: block; }
+    .screen-bar {
+      display: flex; align-items: center; gap: var(--s3);
+      padding: var(--s3) var(--s3) var(--s3) var(--s2);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .screen-bar button {
+      border: none; background: none;
+      cursor: pointer; color: var(--ink); min-width: 44px; min-height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .screen-bar button svg { width: 20px; height: 20px; }
+    .screen-bar h2 { font: var(--heading); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .detail-hero {
+      width: 100%; aspect-ratio: 16/10; background: var(--surface-raised); position: relative;
+    }
+    .detail-body { padding: var(--s5); }
+    .detail-kicker {
+      font: var(--caption); color: var(--blue); font-weight: 600;
+      display: flex; align-items: center; gap: var(--s2);
+    }
+    .detail-kicker svg { width: 12px; height: 12px; }
+    #preview-social { display: inline-flex; align-items: center; gap: 4px; }
+    #preview-social svg { width: 12px; height: 12px; }
+    .detail-body h2 { font: var(--hero); margin-top: var(--s3); }
+    .detail-body .meta { margin-top: var(--s3); font: var(--caption); color: var(--ink-muted); }
+    .detail-body .desc { margin-top: var(--s5); color: var(--ink-muted); }
+    .detail-facts {
+      margin-top: var(--s5); padding: var(--s4) 0;
+      border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);
+      display: flex; flex-direction: column; gap: var(--s4);
+    }
+    .detail-facts .lab { font: var(--caption); color: var(--ink-muted); display: block; }
+    .detail-facts strong { font: var(--body); font-weight: 600; }
+    .detail-status { font: var(--caption-strong); color: var(--accent); margin-top: var(--s4); }
+    .sticky-book {
+      width: 100%; padding: var(--s5);
+      background: var(--surface); border-top: 1px solid var(--border-soft);
+    }
+    .sticky-book .primary-btn { width: 100%; margin: 0; }
+
+    .rec-block { padding: 0 var(--s5); margin-bottom: var(--s5); }
+    .rec-block h3 { font: var(--heading); margin-bottom: var(--s3); }
+
+    .steps {
+      display: flex; align-items: center; justify-content: center; gap: var(--s3);
+      padding: var(--s4); font: var(--caption); color: var(--ink-muted);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .step-dot {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--surface-raised); display: flex; align-items: center; justify-content: center;
+      font: 700 11px/1 var(--font);
+    }
+    .step-dot.on { background: var(--ink); color: #fff; }
+    .venue-band {
+      background: var(--surface-raised); padding: var(--s4) var(--s5); font: var(--caption); color: var(--ink-muted);
+    }
+    .venue-band strong { display: block; font: var(--body); font-weight: 600; color: var(--ink); margin-top: var(--s2); }
+    .tier-card {
+      margin: var(--s5); padding: var(--s5); border: 1px solid var(--border-soft); border-radius: 8px;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4);
+    }
+    .tier-card .add {
+      border: 1px solid var(--accent); color: var(--accent); background: none;
+      border-radius: 8px; padding: var(--s3) var(--s5); font: 600 14px/1 var(--font); cursor: pointer;
+    }
+    .book-footer {
+      width: 100%; padding: var(--s5);
+      background: var(--surface); border-top: 1px solid var(--border-soft);
+      display: flex; justify-content: space-between; align-items: center; gap: var(--s4);
+    }
+    .book-footer .primary-btn { width: auto; margin: 0; padding: 0 28px; }
+    .confirm-card {
+      margin: var(--s5); padding: var(--s5); border: 1px solid var(--border-soft); border-radius: 8px;
+    }
+    .price-rows { padding: 0 var(--s5); font: var(--body); display: flex; flex-direction: column; gap: var(--s3); }
+    .price-rows .row { display: flex; justify-content: space-between; }
+    .price-rows .row.total { font-weight: 700; padding-top: var(--s3); border-top: 1px dashed var(--border-soft); }
+
+    #preview-backdrop {
+      display: none; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 220;
+    }
+    #preview-backdrop.open { display: block; }
+    #preview-backdrop.fading { background: rgba(0,0,0,0); transition: background 360ms ease-out; }
+    #preview-sheet {
+      position: absolute; left: 0; right: 0; bottom: 0; transform: translateY(100%);
+      width: 100%; max-height: 88%; overflow-y: auto;
+      background: var(--surface); border-radius: 16px 16px 0 0; z-index: 230;
+      transition: transform 280ms ease-out;
+      padding-bottom: var(--s5);
+    }
+    #preview-sheet.open { transform: translateY(0); }
+    body:has(#preview-sheet.open) .sticky-book,
+    body:has(#preview-sheet.open) .book-footer { display: none !important; }
+    .preview-handle {
+      display: flex; justify-content: flex-end; padding: var(--s2) var(--s2) 0;
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .preview-handle button {
+      width: 44px; height: 44px; border: none; background: none;
+      color: var(--ink); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .preview-handle svg { width: 20px; height: 20px; }
+    .preview-hero { margin: 0 var(--s4); aspect-ratio: 16/10; border-radius: 8px; }
+    .preview-body { padding: var(--s4) var(--s5) var(--s6); }
+    .preview-actions {
+      display: flex; gap: var(--s4); margin-top: var(--s5);
+      position: sticky; bottom: 0; background: var(--surface); padding-top: var(--s4);
+    }
+    .preview-actions button { flex: 1; min-height: 48px; border-radius: 8px; font: 600 14px/1 var(--font); cursor: pointer; }
+    .btn-outline { border: 1px solid var(--accent); color: var(--accent); background: #fff; }
+    .btn-solid { border: none; background: var(--accent); color: #fff; }
+
+    .list-card {
+      display: flex; gap: var(--s4); padding: var(--s4) var(--s5);
+      border-bottom: 1px solid var(--border-soft); cursor: pointer;
+      background: none; border-left: 0; border-right: 0; border-top: 0;
+      width: 100%; text-align: left; font: inherit; color: inherit;
+    }
+    .list-card .thumb {
+      width: 72px; height: 96px; border-radius: 8px; background: var(--surface-raised); flex-shrink: 0;
+    }
+    .list-card > div { min-width: 0; flex: 1; }
+    .list-card p { font: var(--meta); color: var(--ink-muted); margin-top: var(--s2); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body data-proto="default" data-view="home">
+  <div class="proto">
+    Funnel 2 · <strong>proto</strong> (not BMS)
+    <div class="proto-row">
+      <button type="button" class="proto-btn active" data-proto="default">Default</button>
+      <button type="button" class="proto-btn" data-proto="loading">Loading</button>
+    </div>
+  </div>
+  <div class="phone" id="app">
+    <div class="phone-scroll" id="phone-scroll">
+    <div class="status"><span>9:41</span><span class="status-end"><i data-lucide="signal"></i><i data-lucide="battery-medium"></i></span></div>
+
+    <!-- GLOBAL TOP — brand + location + search (every page) -->
+    <div class="chrome" id="chrome">
+      <header class="header">
+        <button type="button" class="page-back" aria-label="Back">
+          <i data-lucide="arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 id="page-title">It All Starts Here!</h1>
+          <button type="button" class="location" aria-label="Location Agra">
+            <i data-lucide="map-pin"></i>
+            <span class="loc-name">Agra</span>
+            <i data-lucide="chevron-down"></i>
+          </button>
+        </div>
+      </header>
+      <div class="search-block">
+        <form class="search-bar" id="search-form" role="search">
+          <i data-lucide="search"></i>
+          <input id="global-search" type="search" name="q" placeholder="Movies, events, plays…" autocomplete="off" aria-label="Search">
+        </form>
+      </div>
+    </div>
+
+    <div class="stage">
+    <!-- HOME -->
+    <div class="view is-active" id="view-home" data-view-panel="home">
+      <div class="doors">
+        <button type="button" class="door door-movies" data-view="movies">
+          <div class="door-icon icon-movies" aria-hidden="true">
+            <i data-lucide="clapperboard"></i>
+          </div>
+          <span class="door-text">
+            <span class="door-title">Movies</span>
+            <span class="door-sub">Films near you</span>
+          </span>
+        </button>
+        <button type="button" class="door door-events" data-view="events">
+          <div class="door-icon icon-events" aria-hidden="true">
+            <i data-lucide="drama"></i>
+          </div>
+          <span class="door-text">
+            <span class="door-title">Events</span>
+            <span class="door-sub">Comedy, music, plays</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="ad-stack feed-live">
+        <div class="ad ad-stream">
+          <span class="ad-label">Ad</span>
+          <p class="eyebrow">STREAM PREMIERE</p>
+          <h3>NEW MOVIES EVERY FRIDAY</h3>
+          <p class="meta">From the comfort of your home</p>
+        </div>
+        <div class="ad ad-play">
+          <span class="ad-label">Ad</span>
+          <p class="copy">Unlock ₹500 off* on LIVE gigs</p>
+          <button type="button" class="cta">Apply Now</button>
+        </div>
+      </div>
+      <div class="ad-stack feed-skel stack">
+        <div class="skel ad-tall"></div>
+        <div class="skel ad-short"></div>
+      </div>
+
+      <section class="section">
+        <div class="section-head col">
+          <h2>Happening Now</h2>
+          <p class="sub">Trending in Agra · movies first, one push slot</p>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="happen-card" data-open="spider">
+            <div class="poster" style="background:linear-gradient(160deg,#1a2332,#c44)"><span class="happen-tag">Movie</span></div>
+            <p class="title clamp-2">Spider-Man: Brand New Day</p>
+            <p class="meta"><i data-lucide="star" class="star-icon"></i> 9 · 133K+ votes</p>
+          </button>
+          <button type="button" class="happen-card" data-open="odyssey">
+            <div class="poster" style="background:linear-gradient(160deg,#2a1810,#8a5a2a)"><span class="happen-tag">Movie</span></div>
+            <p class="title clamp-2">The Odyssey</p>
+            <p class="meta"><i data-lucide="star" class="star-icon"></i> 9.2 · 164K+ votes</p>
+          </button>
+          <button type="button" class="happen-card" data-open="long">
+            <div class="poster" style="background:linear-gradient(160deg,#3a1020,#c02040)"><span class="happen-tag push">Push</span></div>
+            <p class="title clamp-2">Krishnamurthy Venkataraghavan’s Midnight Stand-Up Extravaganza Featuring Special Guests</p>
+            <p class="meta">Sponsored / viral slot</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Recommended Movies</h2>
+          <button type="button" class="link feed-live" data-view="movies">See All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="movie-card" data-open="spider">
+            <div class="poster" style="background:linear-gradient(160deg,#1a2332,#c44)"></div>
+            <div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">9</span><span class="votes">133K+ votes</span></div>
+            <p class="movie-title clamp-2">Spider-Man: Brand New Day</p>
+          </button>
+          <button type="button" class="movie-card" data-open="odyssey">
+            <div class="poster" style="background:linear-gradient(160deg,#2a1810,#8a5a2a)"></div>
+            <div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">9.2</span><span class="votes">164K+ votes</span></div>
+            <p class="movie-title clamp-2">The Odyssey</p>
+          </button>
+        </div>
+      </section>
+
+      <button type="button" class="utility feed-live" data-view="movies">
+        <div class="utility-icon"><i data-lucide="map-pin"></i></div>
+        <div class="utility-copy">
+          <strong>Browse by cinema</strong>
+          <span>See what's playing in cinemas near you.</span>
+        </div>
+        <i data-lucide="arrow-right" class="link-arrow"></i>
+      </button>
+      <div class="skel util feed-skel"></div>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Live Events</h2>
+          <button type="button" class="link feed-live" data-view="events">View All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel wide"></div><div class="skel wide"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="event-card" data-open="pratyush">
+            <div class="poster" style="background:linear-gradient(160deg,#3a1020,#c02040)"><span class="date-pill">Sun, 2 Aug</span></div>
+            <p class="title clamp-2">Pratyush Chaubey Live</p>
+            <p class="facts">Stand up Comedy</p>
+            <p class="status-fast">Fast Filling</p>
+          </button>
+          <button type="button" class="event-card" data-open="adam">
+            <div class="poster" style="background:linear-gradient(160deg,#102030,#2060a0)"><span class="date-pill">Fri, 13 Nov</span></div>
+            <p class="title clamp-2">Adam Port — Delhi</p>
+            <p class="facts">Music Shows</p>
+            <p class="status-int">633 interested</p>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- MOVIES = movie-booking home -->
+    <div class="view" id="view-movies" data-view-panel="movies">
+      <div class="pill-row feed-live" role="list" aria-label="Languages">
+        <button type="button" class="pill active" role="listitem">All</button>
+        <button type="button" class="pill" role="listitem">Hindi</button>
+        <button type="button" class="pill" role="listitem">English</button>
+        <button type="button" class="pill" role="listitem">Tamil</button>
+      </div>
+      <div class="pill-row feed-skel">
+        <div class="skel pill"></div><div class="skel pill"></div><div class="skel pill"></div><div class="skel pill"></div>
+      </div>
+
+      <div class="spotlight feed-live" style="background:linear-gradient(160deg,#1a2332,#802020)">
+        <span class="badge">Now showing</span>
+        <h3>Spider-Man: Brand New Day</h3>
+        <div class="tags"><span class="tag">Action</span><span class="tag"><i data-lucide="star" class="star-icon"></i> 9</span><span class="tag">IMAX</span></div>
+        <button type="button" class="book" data-open="spider">Book tickets</button>
+      </div>
+      <div class="skel spot feed-skel"></div>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Recommended Movies</h2>
+          <button type="button" class="link feed-live" data-view="movies">See All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="movie-card" data-open="spider">
+            <div class="poster" style="background:linear-gradient(160deg,#1a2332,#c44)"></div>
+            <div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">9</span><span class="votes">133K+ votes</span></div>
+            <p class="movie-title clamp-2">Spider-Man: Brand New Day</p>
+          </button>
+          <button type="button" class="movie-card" data-open="odyssey">
+            <div class="poster" style="background:linear-gradient(160deg,#2a1810,#8a5a2a)"></div>
+            <div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">9.2</span><span class="votes">164K+ votes</span></div>
+            <p class="movie-title clamp-2">The Odyssey</p>
+          </button>
+          <button type="button" class="movie-card" data-open="janneta">
+            <div class="poster" style="background:linear-gradient(160deg,#1e2a1e,#4a6b3a)"></div>
+            <div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">8.7</span><span class="votes">12K+ votes</span></div>
+            <p class="movie-title clamp-2">Jan Neta</p>
+          </button>
+        </div>
+      </section>
+
+      <button type="button" class="utility feed-live" data-view="movies">
+        <div class="utility-icon"><i data-lucide="map-pin"></i></div>
+        <div class="utility-copy">
+          <strong>Browse by cinema</strong>
+          <span>Cinemas near you in Agra</span>
+        </div>
+        <i data-lucide="arrow-right" class="link-arrow"></i>
+      </button>
+      <div class="skel util feed-skel"></div>
+
+      <section class="section">
+        <div class="section-head col">
+          <h2>Coming Soon</h2>
+          <p class="sub">Trailers &amp; interest</p>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel"></div><div class="skel"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="movie-card" data-open="weekend">
+            <div class="poster" style="background:linear-gradient(160deg,#101828,#405060)"></div>
+            <p class="movie-title clamp-2">Weekend pick</p>
+            <p class="votes">Notify me</p>
+          </button>
+          <button type="button" class="movie-card" data-open="nextbig">
+            <div class="poster" style="background:linear-gradient(160deg,#2a1020,#603040)"></div>
+            <p class="movie-title clamp-2">Next big release</p>
+            <p class="votes">Notify me</p>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- EVENTS = event-booking home -->
+    <div class="view" id="view-events" data-view-panel="events">
+      <nav class="categories feed-live" aria-label="Event categories">
+        <button type="button" class="cat"><div class="cat-icon"><i data-lucide="laugh"></i></div><span>Comedy</span></button>
+        <button type="button" class="cat"><div class="cat-icon"><i data-lucide="music"></i></div><span>Music</span></button>
+        <button type="button" class="cat"><div class="cat-icon"><i data-lucide="drama"></i></div><span>Performances</span></button>
+        <button type="button" class="cat"><div class="cat-icon"><i data-lucide="ferris-wheel"></i></div><span>Amusement</span></button>
+      </nav>
+      <div class="categories feed-skel">
+        <div class="skel cat"></div><div class="skel cat"></div><div class="skel cat"></div><div class="skel cat"></div>
+      </div>
+
+      <div class="spotlight feed-live" style="background:linear-gradient(160deg,#3a1020,#c02040)">
+        <span class="badge">Featured</span>
+        <h3 class="clamp-2">Pratyush Chaubey Live</h3>
+        <div class="tags"><span class="tag">Comedy</span><span class="tag">Sun, 2 Aug</span><span class="tag">Fast Filling</span></div>
+        <button type="button" class="book" data-open="pratyush">Book tickets</button>
+      </div>
+      <div class="skel spot feed-skel"></div>
+
+      <section class="section">
+        <div class="section-head col">
+          <h2>Best Events This Week</h2>
+          <p class="sub">Monday to Sunday in Agra</p>
+        </div>
+        <div class="plan-row feed-skel"><div class="skel plan"></div><div class="skel plan"></div><div class="skel plan"></div></div>
+        <div class="plan-row feed-live">
+          <div class="plan-card plan-a"><span class="label">Plan for Today</span><span class="count">25+ Events</span></div>
+          <div class="plan-card plan-b"><span class="label">Plan for Tomorrow</span><span class="count">40+ Events</span></div>
+          <div class="plan-card plan-c"><span class="label">Weekend Plans</span><span class="count">120+ Events</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Popular near you</h2>
+          <button type="button" class="link feed-live" data-open="adam">View All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="scroll-row feed-skel"><div class="skel wide"></div><div class="skel wide"></div><div class="skel wide"></div></div>
+        <div class="scroll-row feed-live">
+          <button type="button" class="event-card" data-open="pratyush">
+            <div class="poster" style="background:linear-gradient(160deg,#3a1020,#c02040)"><span class="date-pill">Sun, 2 Aug</span></div>
+            <p class="title clamp-2">Pratyush Chaubey Live</p>
+            <p class="facts">Stand up Comedy</p>
+            <p class="status-fast">Fast Filling</p>
+          </button>
+          <button type="button" class="event-card" data-open="adam">
+            <div class="poster" style="background:linear-gradient(160deg,#102030,#2060a0)"><span class="date-pill">Fri, 13 Nov</span></div>
+            <p class="title clamp-2">Adam Port — Delhi</p>
+            <p class="facts">Music Shows</p>
+            <p class="status-int">633 interested</p>
+          </button>
+          <button type="button" class="event-card" data-open="long">
+            <div class="poster" style="background:linear-gradient(160deg,#201018,#803050)"><span class="date-pill">Sat, 9 Aug</span></div>
+            <p class="title clamp-2">Krishnamurthy Venkataraghavan’s Midnight Stand-Up Extravaganza Featuring Special Guests</p>
+            <p class="facts">Comedy</p>
+            <p class="status-fast">Fast Filling</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Comedy Shows</h2>
+          <button type="button" class="link feed-live" data-open="pratyush">See All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="event-grid feed-skel"><div class="skel grid"></div><div class="skel grid"></div></div>
+        <div class="event-grid feed-live">
+          <button type="button" class="grid-card" data-open="pratyush">
+            <div class="poster" style="background:linear-gradient(160deg,#3a1020,#c02040)"><span class="date-pill">Sun, 2 Aug</span></div>
+            <p class="title clamp-2">Pratyush Chaubey Live</p>
+            <p class="facts">The Laugh Casa</p>
+          </button>
+          <button type="button" class="grid-card" data-open="long">
+            <div class="poster" style="background:linear-gradient(160deg,#201018,#803050)"><span class="date-pill">Sat, 9 Aug</span></div>
+            <p class="title clamp-2">Midnight Stand-Up Extravaganza</p>
+            <p class="facts">Open mic night</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Music Shows</h2>
+          <button type="button" class="link feed-live" data-open="adam">See All <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="event-grid feed-skel"><div class="skel grid"></div><div class="skel grid"></div></div>
+        <div class="event-grid feed-live">
+          <button type="button" class="grid-card" data-open="adam">
+            <div class="poster" style="background:linear-gradient(160deg,#102030,#2060a0)"><span class="date-pill">Fri, 13 Nov</span></div>
+            <p class="title clamp-2">Adam Port — Delhi</p>
+            <p class="facts">NSIC Ground</p>
+          </button>
+          <button type="button" class="grid-card" data-open="adam">
+            <div class="poster" style="background:linear-gradient(160deg,#102018,#206040)"><span class="date-pill">Thu, 6 Aug</span></div>
+            <p class="title clamp-2">Musical Baithak</p>
+            <p class="facts">Open Mic</p>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- BOOKING FLOW (shared movie + event) -->
+    <div class="screen" id="screen-search">
+      <div class="screen-bar"><button type="button" data-back aria-label="Back"><i data-lucide="arrow-left"></i></button><h2>Results</h2></div>
+      <div class="screen-scroll">
+        <div id="search-hits"></div>
+        <div id="search-none" class="state-msg hidden">No results. Try another word, or open Movies / Events.</div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-detail">
+      <div class="screen-bar">
+        <button type="button" data-back aria-label="Back"><i data-lucide="arrow-left"></i></button>
+        <h2 id="detail-bar-title">Detail</h2>
+      </div>
+      <div class="screen-scroll">
+      <div id="detail-hero" class="detail-hero"></div>
+      <div class="detail-body">
+        <p id="detail-social" class="detail-kicker"></p>
+        <h2 id="detail-title"></h2>
+        <p id="detail-meta" class="meta"></p>
+        <p id="detail-desc" class="desc"></p>
+        <div class="detail-facts">
+          <p><span class="lab" id="fact1-lab">When</span><strong id="fact1"></strong></p>
+          <p><span class="lab" id="fact2-lab">Where</span><strong id="fact2"></strong></p>
+          <p><span class="lab" id="fact3-lab">From</span><strong id="fact3"></strong></p>
+        </div>
+        <p id="detail-status" class="detail-status"></p>
+
+        <div class="rec-block" id="also-block" style="padding:var(--s6) 0 0">
+          <h3>Also happening</h3>
+          <div class="scroll-row" id="also-row"></div>
+        </div>
+        <div class="rec-block" id="ymal-block" style="padding:0">
+          <h3>You might also like</h3>
+          <div class="scroll-row" id="ymal-row"></div>
+        </div>
+      </div>
+      </div>
+      <div class="sticky-book">
+        <button type="button" class="primary-btn" id="detail-book" data-action="book">Book tickets</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-select">
+      <div class="screen-bar">
+        <button type="button" data-action="back-detail" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+        <h2 id="select-title">Select tickets</h2>
+      </div>
+      <div class="screen-scroll">
+      <div class="steps">
+        <span class="step-dot on">1</span><span>Ticket</span>
+        <span>—</span>
+        <span class="step-dot">2</span><span>Review</span>
+      </div>
+      <div class="venue-band">
+        <p id="select-venue"></p>
+        <strong id="select-when"></strong>
+      </div>
+      <div style="padding:var(--s5)">
+        <h2 style="font:var(--heading)">Select Tickets</h2>
+        <p style="font:var(--caption);color:var(--ink-muted);margin-top:var(--s2)">You can add up to 10 tickets only</p>
+      </div>
+      <div class="tier-card">
+        <div>
+          <p style="font:600 14px/1.3 var(--font)" id="tier-name">General Admission</p>
+          <p style="margin-top:var(--s3)" id="tier-price">₹499</p>
+          <p class="detail-status" id="tier-status">Fast Filling</p>
+        </div>
+        <button type="button" class="add" id="add-btn" data-action="add">Add</button>
+      </div>
+      </div>
+      <div class="book-footer hidden" id="select-footer">
+        <div>
+          <p style="font:var(--caption);color:var(--ink-muted)">Total</p>
+          <p style="font:700 16px/1.2 var(--font)" id="select-total">₹499</p>
+        </div>
+        <button type="button" class="primary-btn" data-action="confirm">Proceed</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-confirm">
+      <div class="screen-bar">
+        <button type="button" data-action="back-select" aria-label="Back"><i data-lucide="arrow-left"></i></button>
+        <h2>Confirm booking</h2>
+      </div>
+      <div class="screen-scroll">
+      <div class="confirm-card">
+        <p style="font:600 14px/1.3 var(--font)" id="confirm-title"></p>
+        <p class="meta" id="confirm-details" style="margin-top:var(--s3)"></p>
+        <p class="meta" id="confirm-venue"></p>
+      </div>
+      <div class="price-rows">
+        <div class="row"><span style="color:var(--ink-muted)">Ticket(s) price</span><span id="confirm-sub"></span></div>
+        <div class="row"><span style="color:var(--ink-muted)">Convenience fees</span><span>₹49.00</span></div>
+        <div class="row total"><span>Order total</span><span id="confirm-total"></span></div>
+      </div>
+      <p style="font:var(--caption);color:var(--ink-muted);padding:var(--s5)">By proceeding, I express my consent to complete this transaction.</p>
+      </div>
+      <div class="book-footer">
+        <div>
+          <p style="font:var(--caption);color:var(--ink-muted)">Total</p>
+          <p style="font:700 16px/1.2 var(--font)" id="confirm-bottom-total"></p>
+        </div>
+        <button type="button" class="primary-btn" data-action="done">Continue</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-done">
+      <div class="screen-bar"><button type="button" data-view="home" aria-label="Home"><i data-lucide="arrow-left"></i></button><h2>Booked</h2></div>
+      <div class="screen-scroll">
+      <div class="state-msg" style="color:#2e7d32;font-weight:700">Booking confirmed</div>
+      <p class="state-msg" id="done-copy" style="margin-top:0"></p>
+      <button type="button" class="primary-btn" data-go="bookings">View Tickets</button>
+      <button type="button" class="secondary-btn" data-view="home">Back to Home</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-bookings">
+      <div class="screen-bar"><button type="button" data-back aria-label="Back"><i data-lucide="arrow-left"></i></button><h2>Tickets</h2></div>
+      <div class="screen-scroll">
+      <div class="state-msg" id="bookings-empty">No bookings yet.</div>
+      <div id="bookings-list" class="hidden"></div>
+      <button type="button" class="primary-btn" data-view="events">Browse Events</button>
+      <button type="button" class="secondary-btn" data-view="movies">Browse Movies</button>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-lounge">
+      <div class="screen-bar"><button type="button" data-back aria-label="Back"><i data-lucide="arrow-left"></i></button><h2>HSBC Lounge</h2></div>
+      <div class="screen-scroll">
+      <div class="state-msg">Sponsored lounge kept.</div>
+      </div>
+    </div>
+
+    <div class="screen" id="screen-profile">
+      <div class="screen-bar"><button type="button" data-back aria-label="Back"><i data-lucide="arrow-left"></i></button><h2>Profile</h2></div>
+      <div class="screen-scroll">
+      <div class="state-msg">Account, settings, saved.</div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="bottom-nav-wrap">
+      <nav class="bottom-nav" aria-label="Main">
+        <button type="button" class="nav-item active" data-view="home">
+          <span class="nav-icon" aria-hidden="true"><i data-lucide="house"></i></span>
+          Home
+        </button>
+        <button type="button" class="nav-item" data-go="lounge">
+          <span class="nav-icon" aria-hidden="true"><i data-lucide="armchair"></i></span>
+          HSBC Lounge
+        </button>
+        <button type="button" class="nav-item" data-go="bookings">
+          <span class="nav-icon" aria-hidden="true"><i data-lucide="ticket"></i></span>
+          Tickets
+        </button>
+        <button type="button" class="nav-item" data-go="profile">
+          <span class="nav-icon" aria-hidden="true"><i data-lucide="user"></i></span>
+          Profile
+        </button>
+      </nav>
+    </div>
+
+    <div id="preview-backdrop" aria-hidden="true"></div>
+    <div id="preview-sheet" role="dialog" aria-modal="true" aria-labelledby="preview-title" aria-hidden="true">
+      <div class="preview-handle"><button type="button" data-action="close-preview" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <div id="preview-hero" class="preview-hero"></div>
+      <div class="preview-body">
+        <div style="display:flex;justify-content:space-between;font:var(--caption);margin-bottom:var(--s3)">
+          <span style="color:var(--blue);font-weight:600" id="preview-social"></span>
+          <span style="color:var(--ink-muted)" id="preview-meta"></span>
+        </div>
+        <h2 id="preview-title" style="font:var(--hero)"></h2>
+        <p id="preview-type" style="font:var(--caption);color:var(--ink-muted);margin-top:var(--s2)"></p>
+        <p id="preview-desc" style="font:var(--caption);color:var(--ink-muted);margin-top:var(--s3)"></p>
+        <div style="display:flex;justify-content:space-between;gap:var(--s4);margin-top:var(--s5);padding-top:var(--s4);border-top:1px solid var(--border-soft)">
+          <div>
+            <p id="preview-when" style="font:600 14px/1.3 var(--font)"></p>
+            <p id="preview-where" style="font:var(--caption);color:var(--ink-muted);margin-top:var(--s2)"></p>
+          </div>
+          <p id="preview-price" style="font:700 14px/1.2 var(--font);white-space:nowrap"></p>
+        </div>
+        <div class="preview-actions">
+          <button type="button" class="btn-outline" data-action="preview-more">Know More</button>
+          <button type="button" class="btn-solid" data-action="preview-book">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./lucide.min.js"></script>
+  <script>
+    const ITEMS = {
+      spider: {
+        kind: 'movie', title: 'Spider-Man: Brand New Day',
+        hero: 'linear-gradient(160deg,#1a2332,#c44)',
+        social: '9/10 · 133K+ votes', meta: '2h 25m · Action, Adventure · UA13+',
+        desc: 'Marvel’s next Spider-Man chapter — trailers, cast, and showtimes in Agra.',
+        fact1Lab: 'Formats', fact1: '2D, 3D, IMAX · ENGLISH, HINDI',
+        fact2Lab: 'Release', fact2: 'In cinemas · 30 Jul, 2026',
+        fact3Lab: 'From', fact3: '₹250 onwards',
+        status: 'Trending', when: 'Today onwards', whenPipe: 'Showtimes today',
+        where: 'Cinemas near Agra', whereShort: 'Agra cinemas',
+        price: '₹250 onwards', ticketPrice: 250, tier: 'Standard'
+      },
+      odyssey: {
+        kind: 'movie', title: 'The Odyssey',
+        hero: 'linear-gradient(160deg,#2a1810,#8a5a2a)',
+        social: '9.2/10 · 164K+ votes', meta: '2h 10m · Drama · UA',
+        desc: 'An epic journey on the big screen — critics and audiences are locked in.',
+        fact1Lab: 'Formats', fact1: '2D · ENGLISH, HINDI',
+        fact2Lab: 'Release', fact2: 'In cinemas',
+        fact3Lab: 'From', fact3: '₹200 onwards',
+        status: 'Must watch', when: 'Today onwards', whenPipe: 'Showtimes today',
+        where: 'Cinemas near Agra', whereShort: 'Agra cinemas',
+        price: '₹200 onwards', ticketPrice: 200, tier: 'Standard'
+      },
+      janneta: {
+        kind: 'movie', title: 'Jan Neta',
+        hero: 'linear-gradient(160deg,#1e2a1e,#4a6b3a)',
+        social: '8.7/10 · 12K+ votes', meta: '2h · Political drama · UA',
+        desc: 'A regional drama finding a national audience.',
+        fact1Lab: 'Formats', fact1: '2D · HINDI',
+        fact2Lab: 'Release', fact2: 'In cinemas',
+        fact3Lab: 'From', fact3: '₹180 onwards',
+        status: 'Popular', when: 'Today onwards', whenPipe: 'Showtimes today',
+        where: 'Cinemas near Agra', whereShort: 'Agra cinemas',
+        price: '₹180 onwards', ticketPrice: 180, tier: 'Standard'
+      },
+      weekend: {
+        kind: 'movie', title: 'Weekend pick',
+        hero: 'linear-gradient(160deg,#101828,#405060)',
+        social: 'Coming soon', meta: 'Notify me · Trailer available',
+        desc: 'Mark your interest — we’ll remind you when tickets open.',
+        fact1Lab: 'Status', fact1: 'Coming soon',
+        fact2Lab: 'City', fact2: 'Agra',
+        fact3Lab: 'From', fact3: 'Price TBA',
+        status: 'Notify me', when: 'TBA', whenPipe: 'TBA',
+        where: 'Agra', whereShort: 'Agra',
+        price: 'TBA', ticketPrice: 200, tier: 'Standard'
+      },
+      nextbig: {
+        kind: 'movie', title: 'Next big release',
+        hero: 'linear-gradient(160deg,#2a1020,#603040)',
+        social: 'Coming soon', meta: 'Notify me · Trailer available',
+        desc: 'The next big title on the calendar — interest is building.',
+        fact1Lab: 'Status', fact1: 'Coming soon',
+        fact2Lab: 'City', fact2: 'Agra',
+        fact3Lab: 'From', fact3: 'Price TBA',
+        status: 'Notify me', when: 'TBA', whenPipe: 'TBA',
+        where: 'Agra', whereShort: 'Agra',
+        price: 'TBA', ticketPrice: 200, tier: 'Standard'
+      },
+      pratyush: {
+        kind: 'event', title: 'Pratyush Chaubey Live',
+        hero: 'linear-gradient(160deg,#3a1020,#c02040)',
+        social: '412 interested', meta: '2h · Stand up Comedy',
+        desc: 'Sharp observational comedy — venue and lineup strong enough to trust without checking Instagram first.',
+        fact1Lab: 'When', fact1: 'Sun, 2 Aug, 2026 · 8:00 PM',
+        fact2Lab: 'Where', fact2: 'The Laugh Casa, Rcube Monad Mall, Noida',
+        fact3Lab: 'From', fact3: '₹499 onwards',
+        status: 'Fast Filling', when: 'Sun, 2 Aug, 2026 · 8:00 PM', whenPipe: 'Sun, 2 Aug, 2026 | 8:00 PM',
+        where: 'The Laugh Casa, Rcube Monad Mall, Noida', whereShort: 'The Laugh Casa, Noida',
+        price: '₹499 onwards', ticketPrice: 499, tier: 'General Admission'
+      },
+      adam: {
+        kind: 'event', title: 'Adam Port — Delhi',
+        hero: 'linear-gradient(160deg,#102030,#2060a0)',
+        social: '633 interested', meta: '6h · Music Shows',
+        desc: 'Keinemusik presents Adam Port — cutting-edge electronic music at NSIC Exhibition Ground.',
+        fact1Lab: 'When', fact1: 'Fri, 13 Nov, 2026 · 4:00 PM',
+        fact2Lab: 'Where', fact2: 'NSIC Exhibition Ground, Okhla, Delhi-NCR',
+        fact3Lab: 'From', fact3: '₹3000 onwards',
+        status: 'Fast Filling', when: 'Fri, 13 Nov, 2026 · 4:00 PM', whenPipe: 'Fri, 13 Nov, 2026 | 4:00 PM',
+        where: 'NSIC Exhibition Ground, Okhla, Delhi-NCR', whereShort: 'NSIC Exhibition Ground, Okhla',
+        price: '₹3000 onwards', ticketPrice: 3000, tier: 'General Admission'
+      },
+      long: {
+        kind: 'event', title: 'Krishnamurthy Venkataraghavan’s Midnight Stand-Up Extravaganza Featuring Special Guests',
+        hero: 'linear-gradient(160deg,#201018,#803050)',
+        social: 'Sponsored', meta: '3h · Comedy',
+        desc: 'A late-night stand-up marathon with special guests — the Happening Now push slot.',
+        fact1Lab: 'When', fact1: 'Sat, 9 Aug, 2026 · 10:00 PM',
+        fact2Lab: 'Where', fact2: 'Open Mic Stage, Agra',
+        fact3Lab: 'From', fact3: '₹699 onwards',
+        status: 'Fast Filling', when: 'Sat, 9 Aug, 2026 · 10:00 PM', whenPipe: 'Sat, 9 Aug, 2026 | 10:00 PM',
+        where: 'Open Mic Stage, Agra', whereShort: 'Open Mic Stage, Agra',
+        price: '₹699 onwards', ticketPrice: 699, tier: 'General Admission'
+      },
+      brocode: {
+        kind: 'event', title: 'Brocode The Big Line Up 2026',
+        hero: 'linear-gradient(160deg,#8a3010,#c02040)',
+        social: '6k interested', meta: '3h · Stand up Comedy',
+        desc: "India's biggest comedy line-up — 50+ artists, one afternoon in Gurugram.",
+        fact1Lab: 'When', fact1: 'Sun, 2 Aug, 2026 · 3:00 PM',
+        fact2Lab: 'Where', fact2: 'A DOT by GNH, Gurugram',
+        fact3Lab: 'From', fact3: '₹799 onwards',
+        status: 'Fast Filling', when: 'Sun, 2 Aug, 2026 · 3:00 PM', whenPipe: 'Sun, 2 Aug, 2026 | 3:00 PM',
+        where: 'A DOT by GNH, Gurugram', whereShort: 'A DOT by GNH, Gurugram',
+        price: '₹799 onwards', ticketPrice: 799, tier: 'General Admission'
+      }
+    };
+
+    const ALSO_FOR_MOVIE = ['pratyush', 'adam', 'brocode'];
+    const ALSO_FOR_EVENT = ['pratyush', 'adam', 'long'];
+    const YMAL_MOVIES = ['odyssey', 'janneta', 'spider'];
+    const YMAL_EVENTS = ['adam', 'long', 'brocode'];
+
+    let currentId = 'spider';
+    let previewId = null;
+    let ticketCount = 0;
+    let lastBooking = null;
+
+    const PAGE_TITLES = { home: 'It All Starts Here!', movies: 'Movies', events: 'Events' };
+
+    function paintIcons(root) {
+      if (!window.lucide || typeof lucide.createIcons !== 'function') return;
+      lucide.createIcons({
+        icons: lucide.icons || lucide,
+        attrs: {
+          'stroke-width': '1.8',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round'
+        },
+        root: root || document
+      });
+    }
+
+    function setSocial(el, item) {
+      if (!el) return;
+      if (item.kind === 'movie') {
+        el.innerHTML = '<i data-lucide="star" class="star-icon"></i> ' + item.social;
+      } else {
+        el.textContent = item.social;
+      }
+    }
+
+    function scrollStageTop() {
+      const scroller = document.getElementById('phone-scroll');
+      if (scroller) scroller.scrollTop = 0;
+    }
+
+    function navState() { return document.body.dataset.view || 'home'; }
+
+    function applyState(s) {
+      if (!s) { setView('home'); return; }
+      if (s.v) setView(s.v);
+      switch (s.t) {
+        case 'view': break;
+        case 'screen': openScreen(s.s, false); break;
+        case 'search': runSearch(s.q); break;
+        case 'detail': openDetail(s.id); break;
+        case 'preview': if (s.detailId) openDetail(s.detailId); openPreview(s.id); break;
+        case 'select': currentId = s.id; openSelect(); break;
+        case 'confirm': currentId = s.id; openSelect(); openConfirm(); break;
+        case 'done': currentId = s.id; finishBooking(); break;
+        default: setView('home');
+      }
+    }
+
+    window.addEventListener('popstate', (e) => applyState(e.state));
+
+    function setView(name) {
+      document.body.classList.remove('booking-mode');
+      document.body.dataset.view = name;
+      const h1 = document.getElementById('page-title');
+      if (h1 && PAGE_TITLES[name]) h1.textContent = PAGE_TITLES[name];
+      document.querySelectorAll('.view').forEach(v => v.classList.toggle('is-active', v.dataset.viewPanel === name));
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.toggle('active', n.dataset.view === name);
+      });
+      closeScreens();
+      closePreview();
+      scrollStageTop();
+    }
+
+    function openScreen(name, booking) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-open'));
+      const el = document.getElementById('screen-' + name);
+      if (el) el.classList.add('is-open');
+      document.body.classList.toggle('booking-mode', !!booking);
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.toggle('active', n.getAttribute('data-go') === name);
+      });
+      scrollStageTop();
+    }
+
+    function closeScreens() {
+      closePreview();
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-open'));
+      document.body.classList.remove('booking-mode');
+      const v = document.body.dataset.view || 'home';
+      document.querySelectorAll('.view').forEach(panel => {
+        panel.classList.toggle('is-active', panel.dataset.viewPanel === v);
+      });
+    }
+
+    function cardHtml(id, mode) {
+      const it = ITEMS[id];
+      if (!it) return '';
+      const attr = mode === 'preview' ? 'data-preview="' + id + '"' : 'data-open="' + id + '"';
+      const cls = it.kind === 'movie' ? 'movie-card' : 'event-card';
+      const pill = it.kind === 'event'
+        ? '<span class="date-pill">' + (it.when.split(',')[0] || '') + '</span>'
+        : '';
+      const sub = it.kind === 'movie'
+        ? '<div class="rating-row"><i data-lucide="star" class="star-icon"></i><span class="rating-num">' + (it.social.split('·')[0] || '').trim() + '</span><span class="votes">' + (it.social.split('·')[1] || '').trim() + '</span></div><p class="movie-title clamp-2">' + it.title + '</p>'
+        : '<p class="title clamp-2">' + it.title + '</p><p class="facts">' + it.meta + '</p><p class="status-fast">' + it.status + '</p>';
+      return '<button type="button" class="' + cls + '" ' + attr + '>' +
+        '<div class="poster" style="background:' + it.hero + '">' + pill + '</div>' + sub + '</button>';
+    }
+
+    function fillDetail(id) {
+      currentId = id;
+      const it = ITEMS[id];
+      document.getElementById('detail-bar-title').textContent = it.title;
+      document.getElementById('detail-hero').style.background = it.hero;
+      setSocial(document.getElementById('detail-social'), it);
+      document.getElementById('detail-title').textContent = it.title;
+      document.getElementById('detail-meta').textContent = it.meta;
+      document.getElementById('detail-desc').textContent = it.desc;
+      document.getElementById('fact1-lab').textContent = it.fact1Lab;
+      document.getElementById('fact1').textContent = it.fact1;
+      document.getElementById('fact2-lab').textContent = it.fact2Lab;
+      document.getElementById('fact2').textContent = it.fact2;
+      document.getElementById('fact3-lab').textContent = it.fact3Lab;
+      document.getElementById('fact3').textContent = it.fact3;
+      document.getElementById('detail-status').textContent = it.status;
+
+      const also = (it.kind === 'movie' ? ALSO_FOR_MOVIE : ALSO_FOR_EVENT).filter(k => k !== id);
+      const ymal = (it.kind === 'movie' ? YMAL_MOVIES : YMAL_EVENTS).filter(k => k !== id);
+      document.getElementById('also-row').innerHTML = also.map(k => cardHtml(k, 'preview')).join('');
+      document.getElementById('ymal-row').innerHTML = ymal.map(k => cardHtml(k, 'preview')).join('');
+      paintIcons();
+    }
+
+    function openDetail(id) {
+      if (!ITEMS[id]) return;
+      fillDetail(id);
+      openScreen('detail', true);
+    }
+
+    function openPreview(id) {
+      if (!ITEMS[id]) return;
+      previewId = id;
+      const it = ITEMS[id];
+      document.getElementById('preview-hero').style.background = it.hero;
+      setSocial(document.getElementById('preview-social'), it);
+      paintIcons(document.getElementById('preview-sheet'));
+      document.getElementById('preview-meta').textContent = it.meta;
+      document.getElementById('preview-title').textContent = it.title;
+      document.getElementById('preview-type').textContent = it.kind === 'movie' ? 'Movies' : it.meta;
+      document.getElementById('preview-desc').textContent = it.desc;
+      document.getElementById('preview-when').textContent = it.whenPipe;
+      document.getElementById('preview-where').textContent = it.whereShort;
+      document.getElementById('preview-price').textContent = it.price;
+      document.getElementById('preview-backdrop').classList.add('open');
+      document.getElementById('preview-sheet').classList.add('open');
+      document.getElementById('preview-sheet').setAttribute('aria-hidden', 'false');
+    }
+
+    function closePreview() {
+      previewId = null;
+      const sheet = document.getElementById('preview-sheet');
+      const backdrop = document.getElementById('preview-backdrop');
+      backdrop.classList.remove('open', 'fading');
+      sheet.classList.remove('open', 'expanding');
+      sheet.setAttribute('aria-hidden', 'true');
+      sheet.style.height = '';
+      sheet.style.maxHeight = '';
+      sheet.style.borderRadius = '';
+      sheet.style.transition = '';
+      sheet.style.overflow = '';
+    }
+
+    let expanding = false;
+    function expandPreviewToDetail(id) {
+      if (expanding || !ITEMS[id]) return;
+      expanding = true;
+      const sheet = document.getElementById('preview-sheet');
+      const backdrop = document.getElementById('preview-backdrop');
+      const fromId = currentId;
+      history.pushState({ t: 'detail', id, detailId: fromId, v: navState() }, '');
+      sheet.scrollTop = 0;
+
+      const startH = sheet.getBoundingClientRect().height;
+      sheet.style.maxHeight = 'none';
+      sheet.style.height = startH + 'px';
+      sheet.style.transition = 'none';
+      void sheet.offsetHeight;
+
+      sheet.style.transition = 'height 360ms cubic-bezier(0.22, 0.61, 0.36, 1), border-radius 360ms cubic-bezier(0.22, 0.61, 0.36, 1)';
+      backdrop.classList.add('fading');
+      requestAnimationFrame(() => {
+        sheet.style.height = '100%';
+        sheet.style.borderRadius = '0';
+      });
+
+      setTimeout(() => {
+        openDetail(id);
+        sheet.style.transition = 'none';
+        sheet.classList.remove('open', 'expanding');
+        sheet.style.height = '';
+        sheet.style.maxHeight = '';
+        sheet.style.borderRadius = '';
+        sheet.setAttribute('aria-hidden', 'true');
+        backdrop.classList.remove('open', 'fading');
+        previewId = null;
+        void sheet.offsetWidth;
+        sheet.style.transition = '';
+        expanding = false;
+      }, 380);
+    }
+
+    function openSelect() {
+      closePreview();
+      const it = ITEMS[currentId];
+      ticketCount = 0;
+      document.getElementById('select-title').textContent = it.title;
+      document.getElementById('select-venue').textContent = it.whereShort;
+      document.getElementById('select-when').textContent = it.whenPipe;
+      document.getElementById('tier-name').textContent = it.tier;
+      document.getElementById('tier-price').textContent = '₹' + it.ticketPrice;
+      document.getElementById('tier-status').textContent = it.status;
+      document.getElementById('add-btn').textContent = 'Add';
+      document.getElementById('select-footer').classList.add('hidden');
+      openScreen('select', true);
+    }
+
+    function addTicket() {
+      const it = ITEMS[currentId];
+      ticketCount = 1;
+      document.getElementById('add-btn').textContent = '−  1  +';
+      document.getElementById('select-total').textContent = '₹' + it.ticketPrice;
+      document.getElementById('select-footer').classList.remove('hidden');
+    }
+
+    function openConfirm() {
+      const it = ITEMS[currentId];
+      const sub = it.ticketPrice;
+      const total = sub + 49;
+      document.getElementById('confirm-title').textContent = it.title;
+      document.getElementById('confirm-details').textContent = it.whenPipe + ' · ' + it.tier + ' × 1';
+      document.getElementById('confirm-venue').textContent = it.where;
+      document.getElementById('confirm-sub').textContent = '₹' + sub + '.00';
+      document.getElementById('confirm-total').textContent = '₹' + total + '.00';
+      document.getElementById('confirm-bottom-total').textContent = '₹' + total + '.00';
+      openScreen('confirm', true);
+    }
+
+    function finishBooking() {
+      const it = ITEMS[currentId];
+      lastBooking = it.title;
+      document.getElementById('done-copy').textContent = it.title + ' — path complete.';
+      document.getElementById('bookings-empty').classList.add('hidden');
+      document.getElementById('bookings-list').classList.remove('hidden');
+      document.getElementById('bookings-list').innerHTML =
+        '<div class="confirm-card"><strong>' + it.title + '</strong><p class="meta" style="margin-top:var(--s3)">' + it.whenPipe + '</p></div>';
+      openScreen('done', true);
+    }
+
+    function runSearch(raw) {
+      const q = (raw || '').trim().toLowerCase();
+      openScreen('search', false);
+      const hits = document.getElementById('search-hits');
+      const none = document.getElementById('search-none');
+      if (!q) {
+        hits.innerHTML = '';
+        none.classList.remove('hidden');
+        none.textContent = 'Type something to search movies and events.';
+        return;
+      }
+      const matched = Object.keys(ITEMS).filter(id => {
+        const it = ITEMS[id];
+        return it.title.toLowerCase().includes(q) || it.kind.includes(q) || id.includes(q);
+      });
+      if (!matched.length) {
+        hits.innerHTML = '';
+        none.classList.remove('hidden');
+        none.textContent = 'No results for “‘ + raw + ’”. Try Movies or Events.';
+        return;
+      }
+      none.classList.add('hidden');
+      hits.innerHTML = matched.map(id => {
+        const it = ITEMS[id];
+        return '<button type="button" class="list-card" data-open="' + id + '">' +
+          '<div class="thumb" style="background:' + it.hero + '"></div>' +
+          '<div><h3 class="clamp-2">' + it.title + '</h3><p>' + it.kind + '</p></div></button>';
+      }).join('');
+    }
+
+    document.querySelectorAll('.proto-btn[data-proto]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.proto-btn[data-proto]').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.body.dataset.proto = btn.dataset.proto;
+      });
+    });
+    document.getElementById('search-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = document.getElementById('global-search').value;
+      history.pushState({ t: 'search', q, v: navState() }, '');
+      runSearch(q);
+    });
+    document.getElementById('preview-backdrop')?.addEventListener('click', () => history.back());
+
+    document.getElementById('app').addEventListener('click', (e) => {
+      const pill = e.target.closest('.pill');
+      if (pill && pill.closest('.pill-row')) {
+        pill.closest('.pill-row').querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        return;
+      }
+
+      const action = e.target.closest('[data-action]');
+      if (action) {
+        e.preventDefault();
+        e.stopPropagation();
+        const a = action.getAttribute('data-action');
+        if (a === 'close-preview') history.back();
+        if (a === 'preview-more') {
+          const id = previewId;
+          if (id) expandPreviewToDetail(id);
+        }
+        if (a === 'preview-book') {
+          if (previewId) {
+            currentId = previewId;
+            history.pushState({ t: 'select', id: currentId, v: navState() }, '');
+            openSelect();
+          }
+        }
+        if (a === 'book') {
+          history.pushState({ t: 'select', id: currentId, v: navState() }, '');
+          openSelect();
+        }
+        if (a === 'add') addTicket();
+        if (a === 'back-detail') history.back();
+        if (a === 'back-select') history.back();
+        if (a === 'confirm') {
+          history.pushState({ t: 'confirm', id: currentId, v: navState() }, '');
+          openConfirm();
+        }
+        if (a === 'done') {
+          history.pushState({ t: 'done', id: currentId, v: navState() }, '');
+          finishBooking();
+        }
+        return;
+      }
+
+      const open = e.target.closest('[data-open]');
+      if (open) {
+        e.preventDefault();
+        const id = open.getAttribute('data-open');
+        history.pushState({ t: 'detail', id, v: navState() }, '');
+        openDetail(id);
+        return;
+      }
+
+      const preview = e.target.closest('[data-preview]');
+      if (preview) {
+        e.preventDefault();
+        const id = preview.getAttribute('data-preview');
+        history.pushState({ t: 'preview', id, detailId: currentId, v: navState() }, '');
+        openPreview(id);
+        return;
+      }
+
+      if (e.target.closest('.page-back')) {
+        e.preventDefault();
+        history.back();
+        return;
+      }
+
+      const viewBtn = e.target.closest('button[data-view], a[data-view]');
+      if (viewBtn && !viewBtn.closest('.proto')) {
+        e.preventDefault();
+        const v = viewBtn.getAttribute('data-view');
+        history.pushState({ t: 'view', v }, '');
+        setView(v);
+        return;
+      }
+      if (e.target.closest('[data-back]')) {
+        e.preventDefault();
+        history.back();
+        return;
+      }
+      const go = e.target.closest('button[data-go]');
+      if (!go) return;
+      e.preventDefault();
+      const name = go.getAttribute('data-go');
+      history.pushState({ t: 'screen', s: name, v: navState() }, '');
+      openScreen(name, false);
+    });
+
+    history.replaceState({ t: 'view', v: 'home' }, '');
+    setView('home');
+    paintIcons();
+    applyCaseStudyParams();
+
+    function applyCaseStudyParams() {
+      const raw = (location.hash || '').replace(/^#/, '') || (location.search || '').replace(/^\?/, '');
+      const p = new URLSearchParams(raw);
+      const also = p.get('also');
+      const alsoBlock = document.getElementById('also-block');
+      const ymalBlock = document.getElementById('ymal-block');
+      if (also === 'after' && alsoBlock && ymalBlock && alsoBlock.parentNode) {
+        alsoBlock.parentNode.insertBefore(ymalBlock, alsoBlock);
+      }
+      if (also === 'off' && alsoBlock) alsoBlock.style.display = 'none';
+      const proto = p.get('proto');
+      if (proto) document.body.setAttribute('data-proto', proto);
+      const view = p.get('view');
+      if (view) setView(view);
+      const detail = p.get('detail');
+      const preview = p.get('preview');
+      const select = p.get('select');
+      const confirm = p.get('confirm');
+      if (detail) openDetail(detail);
+      if (preview) {
+        if (!detail) openDetail('spider');
+        openPreview(preview);
+      }
+      if (select) { currentId = select; openSelect(); }
+      if (confirm) { currentId = confirm; openSelect(); openConfirm(); }
+      const scrollTo = p.get('scroll');
+      if (scrollTo === 'also' || scrollTo === 'end') {
+        requestAnimationFrame(() => {
+          const target = scrollTo === 'also'
+            ? document.getElementById('also-block')
+            : document.querySelector('.sticky-book');
+          const scroller = document.getElementById('phone-scroll');
+          if (target && scroller) scroller.scrollTop = Math.max(0, target.offsetTop - 72);
+        });
+      }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BookMyShow — Events discovery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #fcfcfc;
+      --color-surface: #ffffff;
+      --color-surface-soft: #f4f5ef;
+      --color-text: #111111;
+      --color-text-secondary: #2b2b2b;
+      --color-text-muted: #4d4d4d;
+      --color-text-caption: #7a756f;
+      --color-border: rgba(0, 0, 0, 0.08);
+      --color-border-strong: rgba(0, 0, 0, 0.12);
+      --color-accent: #c4123a;
+      --color-accent-soft: #fde8ee;
+      --color-positive: #1f7a4d;
+      --color-caution: #9a6700;
+      --color-wire: #d6d9d0;
+
+      --font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --text-display: clamp(2.25rem, 5vw, 3.25rem);
+      --text-h1: clamp(1.75rem, 3.2vw, 2.25rem);
+      --text-h2: clamp(1.375rem, 2.2vw, 1.625rem);
+      --text-h3: 1.125rem;
+      --text-card: 1rem;
+      --text-body: 1.0625rem;
+      --text-lede: 1.125rem;
+      --text-small: 0.9375rem;
+      --text-caption: 0.8125rem;
+      --text-label: 0.6875rem;
+      --text-insight: clamp(1.375rem, 2.4vw, 1.75rem);
+      --text-stat: clamp(1.5rem, 2.8vw, 2rem);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+      --space-9: 96px;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-device: 10px;
+      --radius-pill: 999px;
+
+      --content-max: 1180px;
+      --reading-max: 38em;
+      --page-gutter: 24px;
+
+      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --shadow-medium: 0 16px 40px rgba(0, 0, 0, 0.1);
+      --shadow-focus: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+      --ring-accent: 0 0 0 1.5px var(--color-accent);
+
+      --toc-w: 184px;
+      --device-sm: 200px;
+      --device-md: 240px;
+      --device-lg: 280px;
+      --ease: 180ms ease;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-family);
+      font-size: var(--text-body);
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--color-text-secondary);
+      background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--shadow-focus);
+      border-radius: var(--radius-sm);
+    }
+
+    .skip {
+      position: absolute;
+      left: var(--space-4);
+      top: -40px;
+      z-index: 100;
+      background: var(--color-text);
+      color: var(--color-surface);
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-small);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+    }
+    .skip:focus { top: var(--space-4); box-shadow: var(--shadow-focus); }
+
+    .prose {
+      color: var(--color-text-muted);
+      line-height: 1.65;
+      max-width: var(--reading-max);
+    }
+    .prose strong { color: var(--color-text); font-weight: 600; }
+
+    h1, h2, h3, p, li, .subhead, .insight-line, .proof, .decision-note, .prose, .overview-copy, .bridge, .verdict {
+      overflow-wrap: break-word;
+    }
+
+    h1 {
+      font-size: var(--text-display);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      max-width: min(16em, 100%);
+      min-width: 0;
+    }
+    h2 {
+      font-size: var(--text-h1);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: var(--space-5);
+      max-width: min(18em, 100%);
+    }
+    h3 {
+      font-size: var(--text-card);
+      font-weight: 600;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      width: min(var(--content-max), calc(100% - (var(--page-gutter) * 2)));
+      max-width: 100%;
+      min-width: 0;
+      margin: 0 auto;
+      padding: var(--space-8) 0 var(--space-5);
+    }
+    .hero-tags {
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-caption);
+      margin-bottom: var(--space-4);
+    }
+    .hero h1 { max-width: min(18em, 100%); }
+    .hero-lede {
+      margin-top: var(--space-5);
+      font-size: var(--text-lede);
+      line-height: 1.55;
+      color: var(--color-text-muted);
+      max-width: var(--reading-max);
+    }
+
+    .hero-lower {
+      margin-top: clamp(var(--space-7), 6vw, var(--space-8));
+      display: grid;
+      grid-template-columns: minmax(200px, 0.72fr) minmax(0, 2fr);
+      gap: clamp(var(--space-6), 5vw, var(--space-8));
+      align-items: start;
+    }
+    .hero-evidence {
+      padding-top: var(--space-4);
+      border-top: 2px solid var(--color-text);
+      max-width: min(22em, 100%);
+    }
+    .hero-evidence-n {
+      font-size: var(--text-stat);
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+    .hero-evidence-l {
+      margin-top: var(--space-3);
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-secondary);
+    }
+    .hero-screens {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(var(--space-4), 3vw, var(--space-6));
+      align-items: start;
+    }
+    .hero-screen { min-width: 0; }
+    .hero-screen:nth-child(2) {
+      margin-top: clamp(var(--space-5), 5vw, var(--space-8));
+    }
+    .hero-screen figcaption {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-2) var(--space-3);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-4);
+    }
+    .hero-step {
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--color-accent);
+    }
+    .hero-moment {
+      font-size: var(--text-small);
+      font-weight: 600;
+      color: var(--color-text);
+      line-height: 1.3;
+      min-width: 0;
+      flex: 1 1 8em;
+    }
+    .hero-where {
+      margin-left: auto;
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-caption);
+      white-space: nowrap;
+      flex: 0 1 auto;
+    }
+    .hero-shot {
+      overflow: hidden;
+      border-radius: var(--radius-device) var(--radius-device) 0 0;
+      background: var(--color-surface);
+      aspect-ratio: 393 / 640;
+      box-shadow: var(--shadow-medium);
+      -webkit-mask-image: linear-gradient(180deg, #000 84%, transparent 100%);
+      mask-image: linear-gradient(180deg, #000 84%, transparent 100%);
+    }
+    .hero-shot img { width: 100%; }
+
+    /* ── Layout: TOC + main ── */
+    .layout {
+      width: min(var(--content-max), calc(100% - (var(--page-gutter) * 2)));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: var(--toc-w) minmax(0, 1fr);
+      gap: clamp(var(--space-6), 5vw, var(--space-8));
+      align-items: start;
+      padding-bottom: var(--space-9);
+      max-width: 100%;
+    }
+    .layout > *,
+    .chapter,
+    .tray,
+    .stage,
+    .findings,
+    .grid-tray,
+    .insight,
+    .opt,
+    .finding {
+      min-width: 0;
+    }
+
+    .toc {
+      position: sticky;
+      top: var(--space-6);
+      padding-top: var(--space-7);
+    }
+    .toc-title {
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-caption);
+      margin-bottom: var(--space-4);
+    }
+    .toc nav {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      border-left: 1px solid var(--color-border);
+      padding-left: var(--space-4);
+    }
+    .toc a {
+      font-size: var(--text-small);
+      line-height: 1.35;
+      color: var(--color-text-caption);
+      text-decoration: none;
+      position: relative;
+      padding: var(--space-2) 0;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .toc a:hover { color: var(--color-text-secondary); }
+    .toc a.is-active {
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+    .toc a.is-active::before {
+      content: "";
+      position: absolute;
+      left: -20px;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      transform: translateY(-50%);
+    }
+    .toc .back-top {
+      margin-top: var(--space-6);
+      padding-left: 0;
+      border: 0;
+      color: var(--color-text-caption);
+      font-size: var(--text-caption);
+    }
+    .toc .back-top:hover { color: var(--color-text); }
+
+    .chapter {
+      padding: var(--space-8) 0 var(--space-4);
+      scroll-margin-top: var(--space-6);
+    }
+    .chapter:first-of-type { padding-top: var(--space-7); }
+    .chapter > .verdict,
+    .chapter > .bridge {
+      max-width: var(--reading-max);
+    }
+    .chapter > h2 + .proof { margin-top: 0; }
+
+    .subhead {
+      font-size: var(--text-h2);
+      font-weight: 600;
+      color: var(--color-text);
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin: var(--space-7) 0 var(--space-4);
+      max-width: min(22em, 100%);
+    }
+    .subhead:first-child { margin-top: 0; }
+
+    /* ── Overview meta ── */
+    .overview-copy {
+      color: var(--color-text-muted);
+      max-width: var(--reading-max);
+      line-height: 1.65;
+    }
+    .overview-copy p + p { margin-top: var(--space-4); }
+    .overview-copy strong { color: var(--color-text); font-weight: 600; }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-7);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+    }
+    .meta-k,
+    .lbl,
+    .opt-k,
+    .tag {
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-caption);
+    }
+    .meta-k {
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .meta-v {
+      font-size: var(--text-small);
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+    .meta-v span {
+      display: block;
+      font-weight: 400;
+      color: var(--color-text-muted);
+      font-size: var(--text-caption);
+      margin-top: var(--space-1);
+    }
+
+    /* ── Cream trays ── */
+    .tray,
+    .insight,
+    .stage,
+    .findings,
+    .grid-tray {
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-lg);
+      margin-top: var(--space-6);
+    }
+    .tray {
+      padding: var(--space-6);
+    }
+    .tray:has(> .statement:only-child) {
+      padding: var(--space-7) var(--space-6);
+    }
+    .tray-caption {
+      margin-top: var(--space-5);
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+      text-align: center;
+      max-width: min(40em, 100%);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Icon / info grids ── */
+    .grid-tray {
+      display: grid;
+      overflow: hidden;
+    }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .cell {
+      padding: var(--space-6) var(--space-5);
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .grid-3 .cell:nth-child(3n) { border-right: none; }
+    .grid-2 .cell:nth-child(2n) { border-right: none; }
+    .cell-label {
+      font-size: var(--text-caption);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--color-text-caption);
+    }
+    .cell h3 { margin-bottom: var(--space-2); }
+    .cell p {
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+    }
+    .cell em {
+      display: block;
+      margin-top: var(--space-3);
+      font-style: normal;
+      font-size: var(--text-caption);
+      color: var(--color-text-secondary);
+    }
+
+    /* ── Problem statement ── */
+    .statement {
+      background: transparent;
+      padding: 0;
+      text-align: center;
+    }
+    .statement p {
+      font-size: var(--text-insight);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      max-width: min(22em, 100%);
+      margin: 0 auto;
+    }
+
+    /* ── Option strips ── */
+    .option-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+    .opt,
+    .ditem,
+    .flow,
+    .logic {
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-5) var(--space-4);
+    }
+    .opt {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      position: relative;
+    }
+    .opt.is-chosen {
+      box-shadow: var(--ring-accent);
+    }
+    .opt.is-chosen h3 { padding-right: 76px; }
+    .opt-k { margin-bottom: var(--space-2); }
+    .opt h3 { margin-bottom: var(--space-2); }
+    .opt-copy {
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+    .opt .shot {
+      width: min(180px, 100%);
+      margin: 0 auto var(--space-4);
+      border-radius: var(--radius-device);
+      overflow: hidden;
+    }
+    .option-strip.flush {
+      gap: var(--space-6);
+    }
+    .option-strip.flush .opt {
+      background: transparent;
+      border-radius: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+    .option-strip.flush .opt-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-2) var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .option-strip.flush .opt-k {
+      margin-bottom: 0;
+    }
+    .option-strip.flush .opt-copy {
+      font-size: var(--text-card);
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--color-text);
+      letter-spacing: -0.02em;
+      margin-bottom: 0;
+      max-width: none;
+    }
+    .option-strip.flush .opt-copy::before { content: none; }
+    .option-strip.flush .opt .shot {
+      width: 88%;
+      max-width: var(--device-md);
+      margin: 0 auto var(--space-4);
+      border-radius: var(--radius-device);
+    }
+    .option-strip.flush .points {
+      margin-top: 0;
+      padding: var(--space-4);
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+    }
+    .points {
+      list-style: none;
+      margin-top: auto;
+      font-size: var(--text-caption);
+      line-height: 1.45;
+    }
+    .points li {
+      padding: var(--space-1) 0;
+      color: var(--color-text-muted);
+    }
+    .points .pro { color: var(--color-text-secondary); }
+    .points .pro::before {
+      content: "+ ";
+      color: var(--color-positive);
+      font-weight: 600;
+    }
+    .points .con::before {
+      content: "– ";
+      color: var(--color-text-caption);
+      font-weight: 600;
+    }
+    .chosen-tag {
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-4);
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      background: var(--color-accent-soft);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-pill);
+    }
+    .verdict {
+      margin-top: var(--space-5);
+      font-size: var(--text-body);
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+    }
+    .note {
+      margin-top: var(--space-3);
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+    }
+    .decision-note {
+      margin-top: var(--space-5);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-body);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--color-text-secondary);
+    }
+    .decision-note strong {
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    /* ── Schematics (un-shot options) ── */
+    .schematic {
+      width: 100%;
+      max-width: 180px;
+      margin: 0 auto var(--space-4);
+      align-self: center;
+      background: var(--color-surface-soft);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      min-height: 220px;
+      box-shadow: inset 0 0 0 1px var(--color-border);
+    }
+    .sch-bar {
+      height: 10px;
+      border-radius: var(--radius-sm);
+      background: var(--color-wire);
+    }
+    .sch-hero {
+      height: 72px;
+      border-radius: var(--radius-sm);
+      background: var(--color-wire);
+      opacity: 0.85;
+    }
+    .sch-row {
+      height: 28px;
+      border-radius: var(--radius-sm);
+      background: var(--color-wire);
+      font-size: var(--text-label);
+      font-weight: 600;
+      color: var(--color-text-muted);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-2);
+      letter-spacing: 0.02em;
+    }
+    .sch-row.hi {
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+    .sch-chips {
+      display: flex;
+      gap: var(--space-1);
+      flex-wrap: wrap;
+    }
+    .sch-chip {
+      height: 18px;
+      border-radius: var(--radius-pill);
+      background: var(--color-wire);
+      flex: 1;
+      min-width: 28px;
+    }
+    .sch-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-1);
+    }
+    .sch-tab {
+      height: 26px;
+      border-radius: var(--radius-sm);
+      background: var(--color-wire);
+    }
+    .sch-tab.on { background: var(--color-accent-soft); }
+
+    /* ── Live devices ── */
+    .live-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+    .live-stack {
+      text-align: center;
+      align-self: center;
+      width: 100%;
+    }
+    .live-device {
+      position: relative;
+      container-type: inline-size;
+      box-sizing: content-box;
+      width: min(var(--device-sm), 100%);
+      max-width: 100%;
+      aspect-ratio: 390 / 875;
+      margin: 0 auto var(--space-3);
+      overflow: hidden;
+      border-radius: var(--radius-device);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-medium);
+    }
+    .live-device iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 390px;
+      height: 875px;
+      border: 0;
+      pointer-events: none;
+      transform-origin: top left;
+      transform: scale(calc(100cqw / 390px));
+    }
+
+    /* ── Mockup stages ── */
+    .stage {
+      padding: clamp(var(--space-6), 5vw, var(--space-7)) var(--space-5) var(--space-6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stage-phone {
+      width: min(var(--device-lg), 70%);
+      max-width: 100%;
+      margin-inline: auto;
+      border-radius: var(--radius-device);
+      overflow: hidden;
+      background: var(--color-surface);
+      box-shadow: var(--shadow-medium);
+      position: relative;
+      z-index: 1;
+    }
+    .stage-phone img { width: 100%; }
+    .callout {
+      position: absolute;
+      z-index: 2;
+      background: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      box-shadow: var(--shadow-soft);
+      max-width: 200px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.35;
+    }
+    .callout.left { left: 8%; top: 28%; }
+    .callout.right { right: 8%; bottom: 22%; }
+    .stage:has(.stack-list) .callout.left { top: 16%; }
+    .stage:has(.stack-list) .callout.right {
+      top: 30%;
+      bottom: auto;
+    }
+    .pair-stage {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: clamp(var(--space-4), 4vw, var(--space-7));
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 100%;
+    }
+    .pair-col {
+      text-align: center;
+      min-width: 0;
+      flex: 1 1 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pair-col .stage-phone { width: min(var(--device-md), 70vw, 100%); transform: none; }
+    .pair-label {
+      display: block;
+      font-size: var(--text-caption);
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--color-text-caption);
+      margin-bottom: var(--space-3);
+    }
+
+    /* ── Results ── */
+    .tag {
+      display: inline-block;
+      margin-bottom: var(--space-2);
+    }
+    .tag.ok { color: var(--color-positive); }
+    .tag.warn { color: var(--color-caution); }
+
+    /* ── Evidence labels ── */
+    .lbl {
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .lbl.accent,
+    .insight > .lbl { color: var(--color-accent); }
+
+    /* ── Research findings ── */
+    .findings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+    .finding { padding: var(--space-6) var(--space-5); }
+    .finding + .finding { border-left: 1px solid var(--color-border); }
+    .finding-n {
+      font-size: var(--text-stat);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+    .finding-n span {
+      display: block;
+      font-size: var(--text-label);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-caption);
+      margin-top: var(--space-1);
+    }
+    .finding h3 {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+    }
+    .finding p {
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+    }
+    .finding em {
+      display: block;
+      margin-top: var(--space-4);
+      font-style: normal;
+      font-size: var(--text-small);
+      color: var(--color-text-secondary);
+    }
+
+    /* ── Core insight ── */
+    .insight {
+      padding: var(--space-6);
+    }
+    .insight-line {
+      font-size: var(--text-insight);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      max-width: min(22em, 100%);
+    }
+    .insight > p {
+      margin-top: var(--space-3);
+      font-size: var(--text-small);
+      line-height: 1.55;
+      color: var(--color-text-muted);
+      max-width: var(--reading-max);
+    }
+
+    .flow-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+    .flow p {
+      font-size: var(--text-small);
+      line-height: 1.5;
+      color: var(--color-text-muted);
+      margin-top: var(--space-2);
+    }
+
+    /* ── Decision / evidence stack ── */
+    .dstack {
+      display: grid;
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+    .dstack.inline {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .dstack.pair {
+      grid-template-columns: 1fr 1fr;
+    }
+    .tray > .dstack:first-child { margin-top: 0; }
+    .dstack + .option-strip { margin-top: var(--space-5); }
+    .ditem p {
+      font-size: var(--text-card);
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.45;
+    }
+    .ditem.emphasis p { font-weight: 600; }
+    .ditem p.quiet {
+      font-weight: 400;
+      color: var(--color-text-muted);
+      font-size: var(--text-small);
+      margin-top: var(--space-2);
+    }
+    .ditem.span { grid-column: 1 / -1; }
+
+    /* ── Chosen option dominates ── */
+    .option-strip.chosen-focus {
+      grid-template-columns: 0.88fr 1.24fr 0.88fr;
+      align-items: stretch;
+    }
+    .option-strip.chosen-focus .opt:not(.is-chosen) { opacity: 0.82; }
+    .option-strip.chosen-focus .opt:not(.is-chosen) .shot {
+      width: min(140px, 100%);
+    }
+    .option-strip.chosen-focus .opt.is-chosen .shot {
+      width: min(220px, 100%);
+    }
+    .live-row.chosen-focus {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    .live-row.chosen-focus .opt:not(.is-chosen) { opacity: 0.82; }
+
+    /* ── Clear intent / undecided ── */
+    .logic-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
+    }
+    .logic p {
+      font-size: var(--text-card);
+      font-weight: 500;
+      color: var(--color-text);
+      margin-top: var(--space-1);
+      line-height: 1.4;
+    }
+
+    /* ── Proof + bridge ── */
+    .proof {
+      margin-top: var(--space-5);
+      font-size: var(--text-insight);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      max-width: min(22em, 100%);
+    }
+    .proof span { color: var(--color-accent); }
+    .bridge {
+      margin-top: var(--space-5);
+      font-size: var(--text-lede);
+      font-weight: 500;
+      color: var(--color-text);
+      letter-spacing: -0.015em;
+      line-height: 1.45;
+    }
+    .synth {
+      margin-top: var(--space-6);
+      font-size: var(--text-insight);
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.03em;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .journey {
+      list-style: none;
+      margin: var(--space-6) auto 0;
+      max-width: min(22em, 100%);
+      text-align: center;
+    }
+    .journey li {
+      font-size: var(--text-card);
+      font-weight: 500;
+      color: var(--color-text);
+      padding: var(--space-1) 0;
+    }
+    .journey li::after {
+      content: "↓";
+      display: block;
+      color: var(--color-text-caption);
+      font-weight: 400;
+      font-size: var(--text-caption);
+      line-height: 1.5;
+    }
+    .journey li:last-child::after { content: none; }
+    .system-pair .stage-phone { width: min(var(--device-lg), 42vw, 100%); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px var(--space-5);
+      background: var(--color-text);
+      color: var(--color-surface);
+      text-decoration: none;
+      font-size: var(--text-small);
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+    }
+    .btn:hover { background: #000; }
+    .proto {
+      margin-top: var(--space-6);
+      text-align: center;
+    }
+    .proto p {
+      font-size: var(--text-small);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .stack-list {
+      list-style: none;
+      max-width: min(28em, 100%);
+      margin: var(--space-5) auto 0;
+      font-size: var(--text-small);
+      color: var(--color-text-muted);
+    }
+    .stack-list li {
+      display: flex;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+    }
+    .stack-list span {
+      font-weight: 600;
+      color: var(--color-text);
+      width: 1.2em;
+    }
+
+    .closing .cell h3 + p { margin-top: var(--space-3); }
+    .closing .cell p + p { margin-top: var(--space-2); }
+
+    footer {
+      padding: var(--space-6) 0 var(--space-8);
+      text-align: center;
+      font-size: var(--text-caption);
+      color: var(--color-text-caption);
+    }
+
+    @media (max-width: 960px) {
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .grid-3 .cell:nth-child(3n) { border-right: 1px solid var(--color-border); }
+      .grid-3 .cell:nth-child(2n) { border-right: none; }
+      .option-strip,
+      .option-strip.chosen-focus,
+      .live-row,
+      .live-row.chosen-focus,
+      .meta,
+      .findings,
+      .flow-pair,
+      .logic-pair,
+      .dstack.inline,
+      .dstack.pair {
+        grid-template-columns: 1fr;
+      }
+      .finding + .finding { border-left: none; border-top: 1px solid var(--color-border); }
+      .ditem.span { grid-column: auto; }
+      .pair-stage { flex-direction: column; align-items: center; }
+      .pair-col { flex: 0 1 auto; width: 100%; }
+      .system-pair .stage-phone,
+      .pair-col .stage-phone { width: min(var(--device-md), 72%); }
+      .option-strip.chosen-focus .opt.is-chosen,
+      .live-row.chosen-focus .opt.is-chosen { order: -1; }
+      .callout {
+        position: static;
+        max-width: none;
+        margin: var(--space-3) 0 0;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        font-size: var(--text-caption);
+        font-weight: 500;
+        color: var(--color-text-muted);
+        text-align: center;
+      }
+      .stage { padding-bottom: var(--space-6); }
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+      }
+      .toc {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        padding: var(--space-3) 0;
+        background: rgba(252, 252, 252, 0.94);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--color-border);
+        margin: 0 calc(var(--page-gutter) * -1);
+        padding-left: var(--page-gutter);
+        padding-right: var(--page-gutter);
+      }
+      .toc-title, .toc .back-top { display: none; }
+      .toc nav {
+        flex-direction: row;
+        gap: var(--space-2);
+        overflow-x: auto;
+        border: 0;
+        padding: 0;
+        scrollbar-width: none;
+      }
+      .toc nav::-webkit-scrollbar { display: none; }
+      .toc a {
+        white-space: nowrap;
+        padding: var(--space-2) var(--space-3);
+        min-height: 44px;
+        border-radius: var(--radius-pill);
+        background: var(--color-surface-soft);
+        font-size: var(--text-caption);
+      }
+      .toc a.is-active::before { display: none; }
+      .toc a.is-active {
+        background: var(--color-accent-soft);
+      }
+      .chapter { scroll-margin-top: 72px; }
+      .hero-lower {
+        grid-template-columns: 1fr;
+        align-items: start;
+        gap: var(--space-6);
+      }
+      .hero-evidence { max-width: none; }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --page-gutter: 16px;
+        --text-display: clamp(1.75rem, 8vw, 2.15rem);
+      }
+      .hero { padding-top: var(--space-7); }
+      .chapter {
+        padding-top: var(--space-7);
+        padding-bottom: var(--space-3);
+      }
+      .chapter:first-of-type { padding-top: var(--space-6); }
+      .subhead { margin-top: var(--space-6); }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .cell { border-right: none !important; }
+      .tray,
+      .insight,
+      .stage {
+        padding: var(--space-5);
+      }
+      .tray:has(> .statement:only-child) {
+        padding: var(--space-6) var(--space-5);
+      }
+      .finding { padding: var(--space-5); }
+      .opt,
+      .ditem,
+      .flow,
+      .logic {
+        padding: var(--space-4);
+      }
+      .hero-screens {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+      }
+      .hero-screen:nth-child(2) { margin-top: 0; }
+      .hero-screen figcaption { margin-bottom: var(--space-4); }
+      .hero-where {
+        flex: 1 0 100%;
+        margin-left: 0;
+      }
+      .hero-shot { aspect-ratio: 393 / 430; }
+      .option-strip.flush .opt .shot {
+        width: min(220px, 70%);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .toc a,
+      .btn {
+        transition: color var(--ease), background-color var(--ease);
+      }
+      .reveal-ready .chapter {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 500ms ease-out, transform 500ms ease-out;
+      }
+      .reveal-ready .chapter.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-ready .chapter .grid-tray .cell {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 500ms ease-out, transform 500ms ease-out;
+      }
+      .reveal-ready .chapter.is-visible .grid-tray .cell {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(1) { transition-delay: 0ms; }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(2) { transition-delay: 50ms; }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(3) { transition-delay: 100ms; }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(4) { transition-delay: 150ms; }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(5) { transition-delay: 200ms; }
+      .reveal-ready .chapter.is-visible .grid-tray .cell:nth-child(6) { transition-delay: 250ms; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .chapter,
+      .grid-tray .cell {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('reveal-ready');
+    }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="hero" id="top">
+    <p class="hero-tags">BookMyShow · Product design case study</p>
+    <h1>Improving Event Discovery for BookMyShow</h1>
+    <p class="hero-lede">Users often entered Movies first and left when they couldn’t find a film worth booking. I redesigned the discovery experience to surface Events at two points — before users choose a category and when movie discovery stalls.</p>
+
+    <div class="hero-lower">
+      <div class="hero-evidence">
+        <p class="hero-evidence-n">Most interviews</p>
+        <p class="hero-evidence-l">started with Movies — even when people hadn’t decided what to watch.</p>
+      </div>
+
+      <div class="hero-screens">
+        <figure class="hero-screen">
+          <div class="hero-shot">
+            <img src="assets/hero-home.png" alt="Redesigned homepage with equal Movies and Events entry points" width="393" height="875">
+          </div>
+        </figure>
+        <figure class="hero-screen">
+          <div class="hero-shot">
+            <img src="assets/movie-detail-also.png" alt="Movie detail page with a nearby events row above movie recommendations" width="393" height="875">
+          </div>
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="Case study contents">
+      <p class="toc-title">Content</p>
+      <nav>
+        <a href="#overview">The opportunity</a>
+        <a href="#problem">Users leave</a>
+        <a href="#found">Research</a>
+        <a href="#movie">First solution</a>
+        <a href="#reframe">The bigger problem</a>
+        <a href="#homepage">Homepage redesign</a>
+        <a href="#system">Final experience</a>
+        <a href="#learned">What changed</a>
+        <a class="back-top" href="#top">Back to top</a>
+      </nav>
+    </aside>
+
+    <main id="main">
+
+      <!-- 1 Overview -->
+      <section class="chapter" id="overview">
+        <h2>The opportunity: Help movie browsers discover other things to do</h2>
+        <div class="overview-copy">
+          <p>Most BookMyShow users open the app, go to Movies, and scroll through films first. When nothing feels interesting enough to watch, the app has other things to offer — comedy shows, concerts, and sports — but those options are easy to miss. I started by improving this drop-off point, then worked back to the homepage.</p>
+        </div>
+        <div class="meta">
+          <div>
+            <span class="meta-k">Role</span>
+            <span class="meta-v">Product designer<span>Research, IA, prototype</span></span>
+          </div>
+          <div>
+            <span class="meta-k">Focus</span>
+            <span class="meta-v">Improve D7 event bookings<span>Route movie browsers to events</span></span>
+          </div>
+          <div>
+            <span class="meta-k">Tools</span>
+            <span class="meta-v">Figma<span>Cursor</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 The problem -->
+      <section class="chapter" id="problem">
+        <h2>Users leave when they can’t find a movie worth booking</h2>
+        <p class="prose">When users browse Movies and don’t find anything they want to book, they usually leave the app. <strong>BookMyShow already has other things to book:</strong> comedy shows, concerts, and sports. But those options are not shown clearly while the user is deciding what else to do.</p>
+
+        <div class="tray">
+          <div class="statement">
+            <p>How can BookMyShow show a useful next option when a user does not find a movie they want?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 Research -->
+      <section class="chapter" id="found">
+        <h2>Research revealed that “no movie” didn’t mean “no plans”</h2>
+        <p class="prose">I interviewed 10 people — and checked Reddit, Quora, and app-store reviews — to understand what people do when they open BookMyShow and don’t find a movie they want to book.</p>
+
+        <div class="findings">
+          <article class="finding">
+            <p class="finding-n">Most people<span>asked</span></p>
+            <h3>Finding 1 — Users still wanted to go out</h3>
+            <p>People could still want to go out that night.</p>
+            <em>Abhay: “No… after opening the app.”</em>
+          </article>
+          <article class="finding">
+            <p class="finding-n">Discovery<span>gap</span></p>
+            <h3>Finding 2 — Event discovery happened outside BookMyShow</h3>
+            <p>People often discovered events on Instagram, YouTube, or through friends, then used BookMyShow later to buy tickets.</p>
+            <em>Aditi: “Usually somewhere else first.”</em>
+          </article>
+        </div>
+
+        <div class="insight">
+          <p class="lbl">Core insight</p>
+          <p class="insight-line">A user may still want to go out even if they don’t choose a movie.</p>
+          <p>The opportunity was not to push users into events. It was to show relevant events when users were still looking for something to do.</p>
+          <div class="flow-pair">
+            <div class="flow">
+              <p class="lbl">Current</p>
+              <p>No movie feels worth booking → User leaves → Event options are missed</p>
+            </div>
+            <div class="flow">
+              <p class="lbl">Opportunity</p>
+              <p>No movie feels worth booking → Alternate experience → Booking → Potential conversion</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 Movie detail -->
+      <section class="chapter" id="movie">
+        <h2>First solution: Recover users after movie discovery fails</h2>
+        <p class="prose">The question wasn’t how to route users away from Movies. It was where to place a bridge from a failed movie discovery to other bookable entertainment — without making the alternative feel like a detour.</p>
+
+        <h3 class="subhead">Where should Events appear without interrupting movie browsing?</h3>
+        <div class="tray">
+          <div class="option-strip flush">
+            <article class="opt">
+              <div class="opt-head">
+                <p class="opt-k">Option 1</p>
+                <p class="opt-copy">Exit modal that appears when the user is about to leave.</p>
+              </div>
+              <img class="shot" src="assets/fork-exit-modal.png" alt="Movie detail with an exit modal offering events as an alternative" width="398" height="888" loading="lazy">
+              <ul class="points">
+                <li class="pro">Captures the exit moment</li>
+                <li class="con">Interrupts the user</li>
+                <li class="con">Feels promotional</li>
+                <li class="con">Risks adding friction at the worst moment</li>
+              </ul>
+            </article>
+            <article class="opt">
+              <div class="opt-head">
+                <p class="opt-k">Option 2</p>
+                <p class="opt-copy">Events row with nearby events inside the movie page.</p>
+              </div>
+              <img class="shot" src="assets/fork-events-row.png" alt="Movie detail with an Also happening near you events row" width="398" height="888" loading="lazy">
+              <ul class="points">
+                <li class="pro">Preserves context</li>
+                <li class="pro">Doesn’t interrupt</li>
+                <li class="pro">Shows concrete alternatives immediately</li>
+                <li class="con">Depends on the user reaching the section</li>
+              </ul>
+            </article>
+            <article class="opt">
+              <div class="opt-head">
+                <p class="opt-k">Option 3</p>
+                <p class="opt-copy">Explore card that opens Events categories.</p>
+              </div>
+              <img class="shot" src="assets/fork-explore-card.png" alt="Movie detail with an Explore another plan card for comedy, plays, and music" width="398" height="888" loading="lazy">
+              <ul class="points">
+                <li class="pro">Makes the alternative highly visible</li>
+                <li class="con">Adds another decision</li>
+                <li class="con">Sends users into a new discovery path</li>
+                <li class="con">Doesn’t show useful alternatives immediately</li>
+              </ul>
+            </article>
+          </div>
+          <p class="note decision-note"><strong>Chosen:</strong> Show nearby Events inside the movie page. The Events row keeps users in context and shows real alternatives without interrupting them — so the next option feels like a <strong>continuation</strong>, not a detour.</p>
+        </div>
+
+        <h3 class="subhead">How should users evaluate an unfamiliar event?</h3>
+        <div class="tray">
+          <div class="live-row chosen-focus">
+            <article class="opt">
+              <p class="opt-k">Option 1</p>
+              <h3>Direct to event detail</h3>
+              <p class="opt-copy">Tapping the card opens the full event detail page.</p>
+              <div class="live-stack">
+                <div class="live-device">
+                  <iframe src="tap-direct.html" title="Tapping an event card opens full event detail" loading="lazy"></iframe>
+                </div>
+              </div>
+              <ul class="points">
+                <li class="pro">Fastest path for users already interested</li>
+                <li class="con">Moves users away from the movie page immediately</li>
+              </ul>
+            </article>
+            <article class="opt is-chosen">
+              <span class="chosen-tag">Chosen</span>
+              <p class="opt-k">Option 2</p>
+              <h3>Preview bottom sheet</h3>
+              <p class="opt-copy">Tapping the card opens a compact preview with key information, then lets users view details or book.</p>
+              <div class="live-stack">
+                <div class="live-device">
+                  <iframe src="tap-peek.html" title="Tapping an event card opens a preview sheet" loading="lazy"></iframe>
+                </div>
+              </div>
+              <ul class="points">
+                <li class="pro">Keeps users on the same page</li>
+                <li class="pro">Enough information to judge whether the event is relevant</li>
+                <li class="con">Adds one step before booking</li>
+              </ul>
+            </article>
+          </div>
+          <p class="note decision-note"><strong>Chosen:</strong> Preview the event before asking users to commit. Tapping an unfamiliar event doesn’t mean they’re ready to leave the movie page. The preview keeps them in place while giving enough information to decide whether the event is worth opening.</p>
+          <p class="note">Card → Preview → View details / Book</p>
+        </div>
+
+        <div class="stage">
+          <div class="callout left">Events above recommendations</div>
+          <div class="stage-phone">
+            <img src="assets/movie-detail-also.png" alt="Movie detail with events carousel above recommendations" width="393" height="875" loading="lazy">
+          </div>
+          <div class="callout right">Preview before commit</div>
+          <p class="tray-caption">Events appear before more movie recommendations, so users can see another kind of plan before leaving.</p>
+        </div>
+
+        <h3 class="subhead">The problem was being solved too late</h3>
+        <div class="tray">
+          <div class="dstack pair">
+            <div class="ditem">
+              <p class="lbl">Recovery</p>
+              <p>The Events row gave movie browsers a relevant alternative <strong>after they had already entered Movies</strong>.</p>
+            </div>
+            <div class="ditem emphasis">
+              <p class="lbl accent">The bigger question</p>
+              <p>Why were undecided users entering Movies in the first place?</p>
+            </div>
+            <div class="ditem span">
+              <p class="lbl">Hypothesis</p>
+              <p>If BookMyShow could surface Events before users committed to a category, we might prevent the dead-end rather than only recover from it.</p>
+            </div>
+          </div>
+        </div>
+        <p class="bridge">So I moved one step upstream — from movie-detail recovery to homepage discovery.</p>
+      </section>
+
+      <!-- 5 The reframe -->
+      <section class="chapter" id="reframe">
+        <h2>The bigger problem: Users choose Movies before deciding what they want to do</h2>
+
+        <p class="proof"><span>Most people</span> I interviewed went to Movies first.</p>
+
+        <div class="stage">
+          <div class="pair-stage">
+            <div class="pair-col">
+              <p class="pair-label">BookMyShow · Movies first</p>
+              <div class="stage-phone">
+                <img src="assets/bms-home-before.png" alt="BookMyShow home — Movies emphasized, small event genre chips at top" width="393" height="875" loading="lazy">
+              </div>
+            </div>
+            <div class="pair-col">
+              <p class="pair-label">District · equal entry points</p>
+              <div class="stage-phone">
+                <img src="assets/district-home.png" alt="District app home — equal Dining, Movies, and Events entry doors" width="393" height="875" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-tray grid-2">
+          <div class="cell">
+            <h3>“I don’t know what I want tonight.”</h3>
+            <p>This user wants ideas, not a specific category.</p>
+          </div>
+          <div class="cell">
+            <h3>“I want to go out — maybe not a film.”</h3>
+            <p>This user wants to go out, but may not want a film.</p>
+          </div>
+        </div>
+        <p class="bridge">The homepage was pushing users toward Movies before they had chosen what kind of plan they wanted.</p>
+      </section>
+
+      <!-- 6 Homepage -->
+      <section class="chapter" id="homepage">
+        <h2>Redesigning the homepage to help users choose what to explore</h2>
+
+        <h3 class="subhead">The audit: Movies dominated attention while Events were easy to miss</h3>
+        <div class="grid-tray grid-3">
+          <div class="cell">
+            <p class="cell-label">Audit</p>
+          </div>
+          <div class="cell">
+            <h3>Movies dominate attention</h3>
+            <p>Featured carousels, recommended films, and promotional banners occupy most of the feed.</p>
+          </div>
+          <div class="cell">
+            <h3>Events are technically available</h3>
+            <p>Comedy, Plays, Music and other categories appear mainly as small chips at the top. Participants often overlooked them or continued into Movies.</p>
+          </div>
+          <div class="cell">
+            <h3>Discovery is fragmented</h3>
+            <p>Each category opens separately, so it is hard to compare movies, comedy, concerts, and sports in one place.</p>
+          </div>
+          <div class="cell">
+            <h3>What users were trying to do</h3>
+            <p>“What should I do tonight?”</p>
+          </div>
+          <div class="cell">
+            <h3>Current experience</h3>
+            <p>“Choose a category first.”</p>
+          </div>
+        </div>
+
+        <h3 class="subhead">Decision 1: Give Movies and Events equal entry points</h3>
+        <div class="tray">
+          <div class="dstack pair">
+            <div class="ditem emphasis">
+              <p class="lbl accent">Evidence</p>
+              <p>Most people I interviewed went to Movies first, even when they hadn’t decided on a movie.</p>
+            </div>
+            <div class="ditem">
+              <p class="lbl">Implication</p>
+              <p>The homepage was asking users to choose a film before helping them choose what kind of plan they wanted.</p>
+            </div>
+          </div>
+          <div class="option-strip chosen-focus">
+            <article class="opt">
+              <p class="opt-k">Option 1</p>
+              <h3>Retain category chips</h3>
+              <p class="opt-copy">Keep Comedy, Plays, Music, Sports and other categories as the primary entry points.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-chips">
+                  <div class="sch-chip"></div><div class="sch-chip"></div><div class="sch-chip"></div><div class="sch-chip"></div>
+                </div>
+                <div class="sch-hero"></div>
+                <div class="sch-row">Recommended movies</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Minimal change; works when users know the category they want</li>
+                <li class="con">Too many choices; doesn’t help undecided users compare</li>
+              </ul>
+            </article>
+            <article class="opt is-chosen">
+              <span class="chosen-tag">Chosen</span>
+              <p class="opt-k">Option 2</p>
+              <h3>Two equal category entries</h3>
+              <p class="opt-copy">Give Movies and Events equal weight at the top of the homepage.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-tabs">
+                  <div class="sch-tab on"></div>
+                  <div class="sch-tab"></div>
+                </div>
+                <div class="sch-hero"></div>
+                <div class="sch-row">Category home</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Makes Movies and Events equally discoverable</li>
+                <li class="pro">Keeps separate Movies and Events pages</li>
+                <li class="con">Users who already know the category they want take one extra step</li>
+              </ul>
+            </article>
+            <article class="opt">
+              <p class="opt-k">Option 3</p>
+              <h3>Category picker only</h3>
+              <p class="opt-copy">Ask users to choose Movies or Events before entering a shared listing.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-hero"></div>
+                <div class="sch-row hi">Pick Movies or Events</div>
+                <div class="sch-row">Shared listing</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Simple and compact</li>
+                <li class="con">Forces a decision before discovery</li>
+              </ul>
+            </article>
+          </div>
+          <p class="note decision-note"><strong>Chosen:</strong> Two equal category entries so <strong>Movies</strong> and <strong>Events</strong> get the same visual priority.</p>
+        </div>
+
+        <h3 class="subhead">Decision 2: Use mixed discovery for undecided users</h3>
+        <div class="tray">
+          <div class="option-strip chosen-focus">
+            <article class="opt">
+              <p class="opt-k">Option 1</p>
+              <h3>Two category-led carousels</h3>
+              <p class="opt-copy">Separate Movies and Events content while keeping the existing ad stack.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-row">Movies carousel</div>
+                <div class="sch-row">Ads</div>
+                <div class="sch-row">Events carousel</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Clear separation; keeps monetisation</li>
+                <li class="con">Still makes users choose a category before browsing</li>
+              </ul>
+            </article>
+            <article class="opt is-chosen">
+              <span class="chosen-tag">Chosen</span>
+              <p class="opt-k">Option 2</p>
+              <h3>Mixed discovery carousel</h3>
+              <p class="opt-copy">One carousel combining films, comedy, concerts, plays and other bookable experiences.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-row hi">Mixed: films + events</div>
+                <div class="sch-row">Ads</div>
+                <div class="sch-row">Recommended</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Lets undecided users browse across formats</li>
+                <li class="pro">Preserves the existing ad inventory</li>
+                <li class="con">Adds another content layer to the homepage</li>
+              </ul>
+            </article>
+            <article class="opt">
+              <p class="opt-k">Option 3</p>
+              <h3>Movie carousel unchanged</h3>
+              <p class="opt-copy">Keep Recommended Movies as the primary discovery feed.</p>
+              <div class="schematic" aria-hidden="true">
+                <div class="sch-bar"></div>
+                <div class="sch-hero"></div>
+                <div class="sch-row">Recommended movies</div>
+              </div>
+              <ul class="points">
+                <li class="pro">Lowest change and implementation risk</li>
+                <li class="con">Keeps Movies as the default place to start</li>
+              </ul>
+            </article>
+          </div>
+          <p class="note decision-note"><strong>Chosen:</strong> Mixed discovery, so undecided users can browse <strong>movies and events together</strong> before choosing a category.</p>
+          <div class="logic-pair">
+            <div class="logic">
+              <p class="lbl">Knows what they want</p>
+              <p>Movies | Events selector</p>
+            </div>
+            <div class="logic">
+              <p class="lbl">Undecided</p>
+              <p>Mixed discovery</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subhead">Prototype testing validated the core flow — but not yet at scale</h3>
+        <p class="prose">I tested with 3 participants across 3 tasks: finding Events directly, browsing without a fixed plan, and still reaching Movies easily.</p>
+        <div class="grid-tray grid-3">
+          <div class="cell">
+            <p class="tag ok">Passed</p>
+            <h3>Finding Events directly</h3>
+            <p>The selector gave them a direct path to Events home and tickets.</p>
+          </div>
+          <div class="cell">
+            <p class="tag warn">Needs validation</p>
+            <h3>Browsing without a fixed plan</h3>
+            <p>They noticed the mixed carousel first, but this needs testing with more real users.</p>
+          </div>
+          <div class="cell">
+            <p class="tag ok">Passed</p>
+            <h3>Movies still easy to find</h3>
+            <p>Movies stayed easy to find for users who came for films.</p>
+          </div>
+        </div>
+        <p class="verdict">Prototype testing supported the basic structure, but open-ended browsing still needs validation with more users and live traffic.</p>
+
+        <div class="stage">
+          <div class="callout left">Movies | Events — equal entry</div>
+          <div class="stage-phone">
+            <img src="assets/hero-home.png" alt="Redesigned BookMyShow homepage with category selector and trending carousel" width="393" height="875" loading="lazy">
+          </div>
+          <div class="callout right">Mixed discovery under the selector</div>
+          <p class="tray-caption">The top of the homepage now lets users choose between Movies and Events, instead of pushing them straight into Movies.</p>
+          <ul class="stack-list">
+            <li><span>1</span> Search and chrome</li>
+            <li><span>2</span> Movies | Events category selector</li>
+            <li><span>3</span> Trending carousel</li>
+            <li><span>4</span> Ad stack</li>
+            <li><span>5</span> Recommended Movies + Live Events</li>
+          </ul>
+          <div class="proto">
+            <p>Walk through the redesigned homepage and event booking flow.</p>
+            <a class="btn" href="homepage-funnel-2.html" target="_blank" rel="noopener">Play prototype</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 Final system -->
+      <section class="chapter" id="system">
+        <h2>The final experience: Discover Events before and after Movies</h2>
+        <p class="prose">The two changes work together. The homepage helps users choose between Movies and Events earlier. The movie detail page shows Events when a user is already browsing a film but may still be open to another plan.</p>
+
+        <div class="stage">
+          <div class="pair-stage system-pair">
+            <div class="pair-col">
+              <p class="pair-label">Homepage</p>
+              <div class="stage-phone">
+                <img src="assets/hero-home.png" alt="Final homepage with equal Movies and Events entry and mixed discovery" width="393" height="875" loading="lazy">
+              </div>
+            </div>
+            <div class="pair-col">
+              <p class="pair-label">Movie detail</p>
+              <div class="stage-phone">
+                <img src="assets/movie-detail-also.png" alt="Final movie detail with Events alternative above recommendations" width="393" height="875" loading="lazy">
+              </div>
+            </div>
+          </div>
+          <ol class="journey" aria-label="End-to-end user journey">
+            <li>Undecided user</li>
+            <li>Movies | Events</li>
+            <li>Mixed discovery</li>
+            <li>Movie discovery</li>
+            <li>No movie feels worth booking</li>
+            <li>Events appear as another option</li>
+            <li>Preview</li>
+            <li>Event detail / booking</li>
+          </ol>
+
+          <p class="synth">Choose earlier → Continue later.</p>
+        </div>
+      </section>
+
+      <!-- 10 Learned -->
+      <section class="chapter" id="learned">
+        <h2>What changed — and what still needs validation</h2>
+        <div class="grid-tray grid-2 closing">
+          <div class="cell">
+            <h3>What the research changed about my understanding</h3>
+            <p><strong>The problem wasn’t simply that Events were hard to find.</strong> BookMyShow was not showing events at the moments when users were still deciding what to do.</p>
+            <p>Most people still entered Movies first — even when they hadn’t decided what they wanted. That meant recovery on the movie page was necessary, but not enough.</p>
+          </div>
+          <div class="cell">
+            <h3>What the prototype proved — and didn’t prove</h3>
+            <p>Events were easy to find, and Movies stayed easy to find. Open-ended browsing still needs more users.</p>
+            <p>This is prototype testing, not live traffic — so there are no real business metrics yet. The movie-detail row still depends on users scrolling far enough to see it, and homepage behaviour needs validation at scale. If more users notice events while browsing, BookMyShow gets more chances to turn that into bookings. Live traffic would validate that chain.</p>
+          </div>
+        </div>
+        <p class="verdict">The goal wasn’t to make users choose Events instead of Movies. It was to make sure that browsing Movies did not hide every other plan BookMyShow already sells.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>BookMyShow · Events discovery</footer>
+
+  <script>
+    (function () {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var links = document.querySelectorAll('.toc nav a:not(.back-top)');
+      var sections = [];
+      links.forEach(function (link) {
+        var id = link.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ id: id, el: el, link: link });
+      });
+
+      function setActive(id) {
+        links.forEach(function (link) {
+          var on = link.getAttribute('href') === '#' + id;
+          link.classList.toggle('is-active', on);
+          if (on) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      }
+
+      function updateSpy() {
+        if (!sections.length) return;
+        var line = 120;
+        var current = sections[0].id;
+        sections.forEach(function (s) {
+          if (s.el.getBoundingClientRect().top <= line) current = s.id;
+        });
+        setActive(current);
+      }
+
+      updateSpy();
+      window.addEventListener('scroll', updateSpy, { passive: true });
+      window.addEventListener('hashchange', updateSpy);
+
+      if (reduced) {
+        document.documentElement.style.scrollBehavior = 'auto';
+      }
+    })();
+
+    (function () {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+
+      var chapters = document.querySelectorAll('.chapter');
+      if (!chapters.length) return;
+
+      document.documentElement.classList.add('reveal-ready');
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+      chapters.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</body>
+</html>
