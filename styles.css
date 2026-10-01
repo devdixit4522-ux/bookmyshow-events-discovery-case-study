@@ -234,11 +234,12 @@ html[data-figma] .proto { display: none !important; }
 .happen-card { flex-basis: 118px; width: 118px; }
 .movie-card .poster, .happen-card .poster {
   width: 100%; height: 156px; border-radius: 8px; background: var(--surface-raised); position: relative;
-  flex-shrink: 0;
+  flex-shrink: 0; border: 1px solid var(--border-soft);
 }
 .happen-card .poster { height: 168px; }
 .event-card .poster {
   width: 128px; height: 176px; border-radius: 8px; background: var(--surface-raised); position: relative;
+  border: 1px solid var(--border-soft);
 }
 .rating-row { display: flex; align-items: center; gap: var(--s2); margin-top: var(--s3); }
 .star { width: 14px; height: 14px; }
@@ -367,6 +368,7 @@ html[data-figma] .proto { display: none !important; }
 .grid-card .poster {
   width: 100%; aspect-ratio: 3/4; border-radius: 8px;
   background: var(--surface-raised); position: relative;
+  border: 1px solid var(--border-soft);
 }
 .grid-card .title { font: var(--caption-strong); margin-top: var(--s3); }
 .grid-card .facts { font: var(--caption); color: var(--ink-muted); margin-top: var(--s1); }
@@ -514,6 +516,7 @@ body.booking-mode .phone { padding-bottom: 0; }
 /* Detail */
 .detail-hero {
   width: 100%; aspect-ratio: 16/10; background: var(--surface-raised); position: relative;
+  border-bottom: 1px solid var(--border-soft);
 }
 .detail-body { padding: var(--s5) var(--s5) 120px; }
 .detail-kicker { font: var(--caption); color: var(--blue); font-weight: 600; }
@@ -653,6 +656,7 @@ body:has(#preview-sheet.open) .book-footer { display: none !important; }
 }
 .list-card .thumb {
   width: 72px; height: 96px; border-radius: 8px; background: var(--surface-raised); flex-shrink: 0;
+  border: 1px solid var(--border-soft);
 }
 .list-card h3 { font: var(--heading); }
 .list-card p { font: var(--caption); color: var(--ink-muted); margin-top: var(--s2); }
